@@ -7,6 +7,9 @@
     "install": "node src/bin.js",
     "test": "tape test/*.js | tap-spec"
   },
+  "bin": {
+    "ipfs": "go-ipfs/ipfs"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/diasdavid/go-ipfs-dep.git"
