@@ -1,20 +1,167 @@
 'use strict'
 
-var test = require('tape')
-var fs = require('fs')
-var path = require('path')
-var rimraf = require('rimraf')
+const test = require('tape')
+const fs = require('fs')
+const path = require('path')
+const rimraf = require('rimraf')
+const goenv = require('go-platform')
+const pkg = require('./../package.json')
+const goipfs = require('../src')
+const version = process.env.TARGET_VERSION || 'v' + pkg.version
 
-var download = require('../src')
+// These tests won't work with promises, wrap the download function to a callback
+const download = (version, platform, arch, callback) => {
+ if (typeof version === 'function' || !version) {
+    callback = version || callback
+    version = null
+  }
 
-test('Ensure ipfs gets downloaded', function (t) {
+  if (typeof platform === 'function' || !platform) {
+    callback = callback || platform
+    platform = null
+  }
+
+  if (typeof arch === 'function' || !arch) {
+    callback = callback || arch
+    arch = null
+  }
+
+  callback = callback || ((err, res) => {})
+
+  goipfs.Download(version, platform, arch)
+    .then((e) => callback(null, e))
+    .catch((e) => callback(e))
+}
+
+test('Ensure ipfs gets downloaded (current version and platform)', (t) => {
+  t.plan(4)
+  const dir = path.resolve(__dirname, '../go-ipfs')
+  rimraf.sync(dir)
+  download((err, res) => {
+    t.ok(res.file.indexOf(`ipfs_${version}_${goenv.GOOS}-${goenv.GOARCH}`) !== -1, 'Returns the correct filename')
+    t.ok(res.dir === path.resolve(__dirname, '../', 'go-ipfs') + '/', 'Returns the correct output path')
+
+    fs.stat(dir, (err, stats) => {
+      t.error(err, 'go-ipfs should stat without error')
+      t.ok(stats, 'go-ipfs was downloaded')
+    })
+  })
+})
+
+test('Ensure Windows version gets downloaded', (t) => {
+  t.plan(6)
+  const dir = path.resolve(__dirname, '../go-ipfs')
+  rimraf.sync(dir)
+  download(version, 'windows', (err, res) => {
+    t.ok(res.file.indexOf(`ipfs_${version}_windows-${goenv.GOARCH}`) !== -1, 'Returns the correct filename')
+    t.ok(res.dir === path.resolve(__dirname, '../', 'go-ipfs') + '/', 'Returns the correct output path')
+
+    fs.stat(dir, (err, stats) => {
+      t.error(err, 'go-ipfs for windows should stat without error')
+      t.ok(stats, 'go-ipfs for windows was downloaded')
+      // Check executable
+      fs.stat(path.join(dir, 'ipfs.exe'), (err2, stats2) => {
+        t.error(err2, 'windows bin should stat without error')
+        t.ok(stats2, 'windows bin was downloaded')
+      })
+    })
+  })
+})
+
+test('Ensure Linux version gets downloaded', (t) => {
+  t.plan(6)
+  const dir = path.resolve(__dirname, '../go-ipfs')
+  rimraf.sync(dir)
+  download(version, 'linux', (err, res) => {
+    t.ok(res.file.indexOf(`ipfs_${version}_linux-${goenv.GOARCH}`) !== -1, 'Returns the correct filename')
+    t.ok(res.dir === path.resolve(__dirname, '../', 'go-ipfs') + '/', 'Returns the correct output path')
+
+    fs.stat(dir, (err, stats) => {
+      t.error(err, 'go-ipfs for linux should stat without error')
+      t.ok(stats, 'go-ipfs for linux was downloaded')
+      // Check executable
+      fs.stat(path.join(dir, 'ipfs'), (err2, stats2) => {
+        t.error(err2, 'linux bin should stat without error')
+        t.ok(stats2, 'linux bin was downloaded')
+      })
+    })
+  })
+})
+
+test('Ensure OSX version gets downloaded', (t) => {
+  t.plan(6)
+  const dir = path.resolve(__dirname, '../go-ipfs')
+  rimraf.sync(dir)
+  download(version, 'darwin', (err, res) => {
+    t.ok(res.file.indexOf(`ipfs_${version}_darwin-${goenv.GOARCH}`) !== -1, 'Returns the correct filename')
+    t.ok(res.dir === path.resolve(__dirname, '../', 'go-ipfs') + '/', 'Returns the correct output path')
+
+    fs.stat(dir, (err, stats) => {
+      t.error(err, 'go-ipfs for OSX should stat without error')
+      t.ok(stats, 'go-ipfs OSX linux was downloaded')
+      // Check executable
+      fs.stat(path.join(dir, 'ipfs'), (err2, stats2) => {
+        t.error(err2, 'OSX bin should stat without error')
+        t.ok(stats2, 'OSX bin was downloaded')
+      })
+    })
+  })
+})
+
+test('Ensure TARGET_OS, TARGET_VERSION and TARGET_ARCH version gets downloaded', (t) => {
+  t.plan(6)
+  const dir = path.resolve(__dirname, '../go-ipfs')
+  rimraf.sync(dir)
+  process.env.TARGET_OS = 'windows'
+  process.env.TARGET_VERSION = version
+  process.env.TARGET_ARCH = '386'
+  download((err, res) => {
+    t.ok(res.file.indexOf(`ipfs_${process.env.TARGET_VERSION}_${process.env.TARGET_OS}-${process.env.TARGET_ARCH}`) !== -1, 'Returns the correct filename')
+    t.ok(res.dir === path.resolve(__dirname, '../', 'go-ipfs') + '/', 'Returns the correct output path')
+
+    fs.stat(dir, (err, stats) => {
+      t.error(err, 'go-ipfs for windows should stat without error')
+      t.ok(stats, 'go-ipfs for windows was downloaded')
+      // Check executable
+      fs.stat(path.join(dir, 'ipfs.exe'), (err2, stats2) => {
+        t.error(err2, 'windows bin should stat without error')
+        t.ok(stats2, 'windows bin was downloaded')
+        delete process.env.TARGET_OS
+        delete process.env.TARGET_VERSION
+        delete process.env.TARGET_ARCH
+      })
+    })
+  })
+})
+
+test('Returns an error when version unsupported', (t) => {
   t.plan(2)
   const dir = path.resolve(__dirname, '../go-ipfs')
   rimraf.sync(dir)
-  download(function () {
-    fs.stat(dir, function (err, stats) {
-      t.error(err, 'ipfs bin should stat without error')
-      t.ok(stats, 'ipfs was downloaded')
-    })
+  download('bogusversion', 'linux', (err, res) => {
+    t.ok(err !== null, 'Throws an error')
+    t.ok(err.toString() === "Error: Version 'bogusversion' not available", 'Throws the correct error message')
   })
+})
+
+test('Public API', (t) => {
+  t.plan(3)
+  t.ok(typeof goipfs.Download === 'function', 'has Download() function')
+  t.ok(goipfs.Versions !== null, 'has Versions property')
+  t.ok(goipfs.Platforms !== null, 'has Platforms property')
+})
+
+test('Public API - Versions', (t) => {
+  t.plan(1)
+  t.ok(goipfs.Versions, 'Has Versions property')
+})
+
+test('Public API - Platforms', (t) => {
+  t.plan(1)
+  t.ok(goipfs.Platforms, 'Has Platforms property')
+})
+
+test('Public API - Archs', (t) => {
+  t.plan(1)
+  t.ok(goipfs.Archs, 'Has Archs property')
 })
