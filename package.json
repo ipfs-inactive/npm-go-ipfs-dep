@@ -1,14 +1,11 @@
 {
   "name": "go-ipfs-dep",
-  "version": "0.4.3",
+  "version": "0.4.3-1",
   "description": "Install the latest go-ipfs binary",
   "main": "src/index.js",
   "scripts": {
     "install": "node src/bin.js",
     "test": "tape test/*.js | tap-spec"
-  },
-  "bin": {
-    "ipfs": "go-ipfs/ipfs"
   },
   "repository": {
     "type": "git",
