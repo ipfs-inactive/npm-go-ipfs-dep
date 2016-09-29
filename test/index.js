@@ -1,7 +1,10 @@
+'use strict'
+
 var test = require('tape')
 var fs = require('fs')
-var download = require('../src')
 var path = require('path')
+
+var download = require('../src')
 
 test('Ensure ipfs gets downloaded', function (t) {
   t.plan(2)
