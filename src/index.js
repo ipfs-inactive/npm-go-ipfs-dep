@@ -1,3 +1,5 @@
+'use strict'
+
 var path = require('path')
 var goenv = require('go-platform')
 var version = require('./../package.json').version
@@ -6,6 +8,7 @@ var gunzip = require('gunzip-maybe')
 var tarFS = require('tar-fs')
 
 module.exports = function (callback) {
+  callback = callback || noop
   checkPlatform(goenv) // make sure we can do this.
 
   // hacky hack hack to work around unpublishability
@@ -20,10 +23,10 @@ module.exports = function (callback) {
     .get(url)
     .pipe(gunzip())
     .pipe(
-        tarFS
-          .extract(installPath)
-          .on('finish', callback)
-        )
+      tarFS
+        .extract(installPath)
+        .on('finish', callback)
+    )
 
   function checkPlatform (goenv) {
     switch (goenv.GOOS) {
@@ -46,3 +49,5 @@ module.exports = function (callback) {
     }
   }
 }
+
+function noop () {}
