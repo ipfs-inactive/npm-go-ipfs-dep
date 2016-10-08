@@ -1,3 +1,4 @@
 node_modules
 *.log
 go-ipfs
+.vscode

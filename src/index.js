@@ -1,25 +1,33 @@
 'use strict'
 
-var path = require('path')
+var fs = require('fs')
 var goenv = require('go-platform')
-var version = require('./../package.json').version
-var request = require('request')
 var gunzip = require('gunzip-maybe')
+var path = require('path')
+var request = require('request')
 var tarFS = require('tar-fs')
+var unzip = require('unzip')
+var version = require('./../package.json').version
 
 module.exports = function (callback) {
   callback = callback || noop
+
+  var fileName, fileExtension, url, installPath, isUnixy
+
   checkPlatform(goenv) // make sure we can do this.
 
   // hacky hack hack to work around unpublishability
   version = version.replace(/-[0-9]+/, '')
 
-  var filename = 'ipfs_v' + version + '_' + goenv.GOOS + '-' + goenv.GOARCH + '.tar.gz'
-  var url = 'http://dist.ipfs.io/go-ipfs/v' + version + '/go-' + filename
+  isUnixy ? fileExtension = '.tar.gz' : fileExtension = '.zip'
 
-  var installPath = path.resolve(__dirname, '..')
+  fileName = 'ipfs_v' + version + '_' + goenv.GOOS + '-' + goenv.GOARCH + fileExtension
+  url = 'http://dist.ipfs.io/go-ipfs/v' + version + '/go-' + fileName
 
-  request
+  installPath = path.resolve(__dirname, '..')
+
+  if (isUnixy) {
+    request
     .get(url)
     .pipe(gunzip())
     .pipe(
@@ -27,12 +35,23 @@ module.exports = function (callback) {
         .extract(installPath)
         .on('finish', callback)
     )
+  } else {
+    request
+    .get(url)
+    .pipe(
+      unzip.Extract({ path: installPath })
+      .on('close', callback))
+  }
 
   function checkPlatform (goenv) {
     switch (goenv.GOOS) {
       case 'darwin':
       case 'linux':
       case 'freebsd':
+        isUnixy = true
+        break
+      case 'windows':
+        isUnixy = false
         break
       default:
         throw new Error('no binary available for os:' + goenv.GOOS)
