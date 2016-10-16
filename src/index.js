@@ -1,6 +1,6 @@
 'use strict'
 
-var fs = require('fs')
+var checkPlatform = require('./checkPlatform')
 var goenv = require('go-platform')
 var gunzip = require('gunzip-maybe')
 var path = require('path')
@@ -12,60 +12,43 @@ var version = require('./../package.json').version
 module.exports = function (callback) {
   callback = callback || noop
 
-  var fileName, fileExtension, url, installPath, isUnixy
+  var fileExtension
+  var fileName
+  var fileStream
+  var installPath
+  var isWindows
+  var url
 
-  checkPlatform(goenv) // make sure we can do this.
+  // make sure we can do this.
+  if (!checkPlatform.isSupportedArchitecture(goenv.GOARCH)) {
+    throw new Error('no binary available for arch: ' + goenv.GOARCH)
+  }
+
+  isWindows = checkPlatform.isWindows(goenv.GOOS)
 
   // hacky hack hack to work around unpublishability
   version = version.replace(/-[0-9]+/, '')
 
-  isUnixy ? fileExtension = '.tar.gz' : fileExtension = '.zip'
+  isWindows ? fileExtension = '.zip' : fileExtension = '.tar.gz'
 
   fileName = 'ipfs_v' + version + '_' + goenv.GOOS + '-' + goenv.GOARCH + fileExtension
   url = 'http://dist.ipfs.io/go-ipfs/v' + version + '/go-' + fileName
 
   installPath = path.resolve(__dirname, '..')
 
-  if (isUnixy) {
-    request
-    .get(url)
-    .pipe(gunzip())
+  fileStream = request.get(url)
+
+  if (isWindows) {
+    fileStream.pipe(
+      unzip.Extract({ path: installPath })
+      .on('close', callback))
+  } else {
+    fileStream.pipe(gunzip())
     .pipe(
       tarFS
         .extract(installPath)
         .on('finish', callback)
     )
-  } else {
-    request
-    .get(url)
-    .pipe(
-      unzip.Extract({ path: installPath })
-      .on('close', callback))
-  }
-
-  function checkPlatform (goenv) {
-    switch (goenv.GOOS) {
-      case 'darwin':
-      case 'linux':
-      case 'freebsd':
-        isUnixy = true
-        break
-      case 'windows':
-        isUnixy = false
-        break
-      default:
-        throw new Error('no binary available for os:' + goenv.GOOS)
-    }
-
-    switch (goenv.GOARCH) {
-      case 'amd64':
-      case '386':
-      case 'arm':
-        break
-
-      default:
-        throw new Error('no binary available for arch: ' + goenv.GOARCH)
-    }
   }
 }
 

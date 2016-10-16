@@ -5,6 +5,8 @@
   "main": "src/index.js",
   "scripts": {
     "install": "node src/bin.js",
+    "lint": "aegir-lint",
+    "coverage": "aegir-coverage",
     "test": "tape test/*.js | tap-spec"
   },
   "repository": {
@@ -29,6 +31,7 @@
   },
   "homepage": "https://github.com/diasdavid/go-ipfs-dep",
   "devDependencies": {
+    "aegir": "^8.1.2",
     "tap-spec": "^4.1.1",
     "tape": "^4.6.0"
   }
