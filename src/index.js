@@ -12,31 +12,21 @@ var version = require('./../package.json').version
 module.exports = function (callback) {
   callback = callback || noop
 
-  var fileExtension
-  var fileName
-  var fileStream
-  var installPath
-  var isWindows
-  var url
-
   // make sure we can do this.
   if (!checkPlatform.isSupportedArchitecture(goenv.GOARCH)) {
     throw new Error('no binary available for arch: ' + goenv.GOARCH)
   }
 
-  isWindows = checkPlatform.isWindows(goenv.GOOS)
+  const isWindows = checkPlatform.isWindows(goenv.GOOS)
 
   // hacky hack hack to work around unpublishability
   version = version.replace(/-[0-9]+/, '')
 
-  isWindows ? fileExtension = '.zip' : fileExtension = '.tar.gz'
-
-  fileName = 'ipfs_v' + version + '_' + goenv.GOOS + '-' + goenv.GOARCH + fileExtension
-  url = 'http://dist.ipfs.io/go-ipfs/v' + version + '/go-' + fileName
-
-  installPath = path.resolve(__dirname, '..')
-
-  fileStream = request.get(url)
+  const fileExtension = isWindows ? '.zip' : '.tar.gz'
+  const fileName = 'ipfs_v' + version + '_' + goenv.GOOS + '-' + goenv.GOARCH + fileExtension
+  const url = 'http://dist.ipfs.io/go-ipfs/v' + version + '/go-' + fileName
+  const installPath = path.resolve(__dirname, '..')
+  const fileStream = request.get(url)
 
   if (isWindows) {
     fileStream.pipe(
