@@ -12,10 +12,6 @@ module.exports = {
     }
   },
   isWindows: function (os) {
-    if (os === 'windows') {
-      return true
-    }
-
-    return false
+    return os === 'windows'
   }
 }
