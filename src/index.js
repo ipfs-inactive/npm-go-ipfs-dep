@@ -24,7 +24,7 @@ module.exports = function (callback) {
 
   const fileExtension = isWindows ? '.zip' : '.tar.gz'
   const fileName = 'ipfs_v' + version + '_' + goenv.GOOS + '-' + goenv.GOARCH + fileExtension
-  const url = 'http://dist.ipfs.io/go-ipfs/v' + version + '/go-' + fileName
+  const url = 'https://dist.ipfs.io/go-ipfs/v' + version + '/go-' + fileName
   const installPath = path.resolve(__dirname, '..')
   const fileStream = request.get(url)
 
