@@ -6,7 +6,7 @@ const path = require('path')
 const rimraf = require('rimraf')
 const goenv = require('go-platform')
 const pkg = require('./../package.json')
-const goipfs = require('../src')
+const Download = require('../src')
 const version = process.env.TARGET_VERSION || 'v' + pkg.version
 
 // These tests won't work with promises, wrap the download function to a callback
@@ -28,7 +28,7 @@ const download = (version, platform, arch, callback) => {
 
   callback = callback || ((err, res) => {})
 
-  goipfs.Download(version, platform, arch)
+  Download(version, platform, arch)
     .then((e) => callback(null, e))
     .catch((e) => callback(e))
 }
@@ -142,26 +142,4 @@ test('Returns an error when version unsupported', (t) => {
     t.ok(err !== null, 'Throws an error')
     t.ok(err.toString() === "Error: Version 'bogusversion' not available", 'Throws the correct error message')
   })
-})
-
-test('Public API', (t) => {
-  t.plan(3)
-  t.ok(typeof goipfs.Download === 'function', 'has Download() function')
-  t.ok(goipfs.Versions !== null, 'has Versions property')
-  t.ok(goipfs.Platforms !== null, 'has Platforms property')
-})
-
-test('Public API - Versions', (t) => {
-  t.plan(1)
-  t.ok(goipfs.Versions, 'Has Versions property')
-})
-
-test('Public API - Platforms', (t) => {
-  t.plan(1)
-  t.ok(goipfs.Platforms, 'Has Platforms property')
-})
-
-test('Public API - Archs', (t) => {
-  t.plan(1)
-  t.ok(goipfs.Archs, 'Has Archs property')
 })

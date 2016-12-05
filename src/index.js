@@ -121,9 +121,4 @@ function download (version, platform, arch, installPath) {
   })
 }
 
-// Public interface
-Object.assign(download, { Platforms: support.Platforms })
-Object.assign(download, { Versions: support.Versions })
-Object.assign(download, { Archs: support.Archs })
-Object.assign(download, { Download: download })
 module.exports = download
