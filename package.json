@@ -12,8 +12,6 @@
   },
   "scripts": {
     "install": "node src/bin.js",
-    "lint": "aegir-lint",
-    "coverage": "aegir-coverage",
     "test": "tape test/*.js | tap-spec"
   },
   "repository": {
