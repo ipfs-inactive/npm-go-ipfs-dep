@@ -6,6 +6,10 @@
     "version": "v0.4.4"
   },
   "main": "src/index.js",
+  "engines": {
+    "node": ">=4.0.0",
+    "npm": ">=3.0.0"
+  },
   "scripts": {
     "install": "node src/bin.js",
     "lint": "aegir-lint",
