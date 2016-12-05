@@ -39,22 +39,6 @@ let distUrl = (goIpfsInfo && goIpfsInfo.distUrl)
   ? pkg['go-ipfs'].distUrl 
   : 'https://dist.ipfs.io'
 
-// On error callback
-const error = (err, callback) => {
-  process.stdout.write(`${err}\n`)
-  process.stdout.write(`Download failed!\n\n`)
-  callback(err)
-}
-
-// On success callback
-const success = (fileName, installPath, callback) => {
-  // go-ipfs contents are in 'go-ipfs/', so append that to the path
-  const outputPath = installPath + '/go-ipfs/'
-  process.stdout.write(`Downloaded ${fileName}\n`)
-  process.stdout.write(`Installed go-${fileName.replace('.tar.gz', '').replace('.zip', '').replace(/_/g, ' ')} to ${outputPath}\n`)
-  callback({ file: fileName, dir: outputPath })
-}
-
 // Main function
 function download (version, platform, arch, installPath) {
   return new Promise((resolve, reject) => {
@@ -69,7 +53,7 @@ function download (version, platform, arch, installPath) {
     try {
       support.verify(version, platform, arch)
     } catch (e) {
-      return error(e, reject)
+      return reject(e)
     }
 
     // Flag for Windows
@@ -81,7 +65,8 @@ function download (version, platform, arch, installPath) {
     const url = distUrl + '/go-ipfs/' + version + '/go-' + fileName
 
     // Success callback wrapper
-    const done = () => success(fileName, installPath, resolve)
+    // go-ipfs contents are in 'go-ipfs/', so append that to the path
+    const done = () => resolve({ file: fileName, dir: path.join(installPath, '/go-ipfs/') })
 
     // Unpack the response stream
     const unpack = (stream) => {
