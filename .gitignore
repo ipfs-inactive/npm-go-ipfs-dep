@@ -5,3 +5,6 @@ go-ipfs
 
 # Coverage directory used by tools like istanbul
 coverage
+
+# Sublime files
+*sublime*

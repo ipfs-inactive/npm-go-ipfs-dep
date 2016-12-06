@@ -2,11 +2,16 @@
   "name": "go-ipfs-dep",
   "version": "0.4.4",
   "description": "Install the latest go-ipfs binary",
+  "go-ipfs": {
+    "version": "v0.4.4"
+  },
   "main": "src/index.js",
+  "engines": {
+    "node": ">=4.0.0",
+    "npm": ">=3.0.0"
+  },
   "scripts": {
     "install": "node src/bin.js",
-    "lint": "aegir-lint",
-    "coverage": "aegir-coverage",
     "test": "tape test/*.js | tap-spec"
   },
   "repository": {
