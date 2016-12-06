@@ -1,6 +1,6 @@
 {
   "name": "go-ipfs-dep",
-  "version": "0.4.4",
+  "version": "0.4.4-1",
   "description": "Install the latest go-ipfs binary",
   "go-ipfs": {
     "version": "v0.4.4"
@@ -12,11 +12,16 @@
   },
   "scripts": {
     "install": "node src/bin.js",
-    "test": "tape test/*.js | tap-spec"
+    "test": "tape test/*.js | tap-spec",
+    "lint": "standard"
   },
+  "pre-commit": [
+    "lint",
+    "test"
+  ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/diasdavid/go-ipfs-dep.git"
+    "url": "git+https://github.com/ipfs/npm-go-ipfs-dep.git"
   },
   "dependencies": {
     "go-platform": "^1.0.0",
@@ -32,11 +37,13 @@
   "author": "Juan Benet <juan@benet.ai> (http://juan.benet.ai/)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/diasdavid/go-ipfs-dep/issues"
+    "url": "https://github.com/ipfs/npm-go-ipfs-dep/issues"
   },
-  "homepage": "https://github.com/diasdavid/go-ipfs-dep",
+  "homepage": "https://github.com/ipfs/npm-go-ipfs-dep",
   "devDependencies": {
+    "pre-commit": "^1.1.3",
     "rimraf": "^2.5.4",
+    "standard": "^8.6.0",
     "tap-spec": "^4.1.1",
     "tape": "^4.6.0"
   }

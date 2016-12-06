@@ -12,7 +12,7 @@ const error = (err) => {
 
 const success = (fileName, installPath) => {
   process.stdout.write(`Downloaded ${fileName}\n`)
-  process.stdout.write(`Installed go-${fileName.replace('.tar.gz', '').replace('.zip', '').replace(/_/g, ' ')} to ${outputPath}\n`)
+  process.stdout.write(`Installed go-${fileName.replace('.tar.gz', '').replace('.zip', '').replace(/_/g, ' ')} to ${installPath}\n`)
   process.exit(1)
 }
 

@@ -1,5 +1,5 @@
 'use strict'
-/* 
+/*
   Download go-ipfs distribution package for desired version, platform and architecture,
   and unpack it to a desired output directory.
 
@@ -26,27 +26,27 @@ const request = require('request')
 const tarFS = require('tar-fs')
 const unzip = require('unzip')
 const support = require('./check-support')
-const pkg  = require('./../package.json')
+const pkg = require('./../package.json')
 
 // Check package.json for default config
 const goIpfsInfo = pkg['go-ipfs']
 
-const goIpfsVersion = (goIpfsInfo && goIpfsInfo.version) 
+const goIpfsVersion = (goIpfsInfo && goIpfsInfo.version)
   ? pkg['go-ipfs'].version
   : 'v' + pkg.version.replace(/-[0-9]+/, '')
 
-let distUrl = (goIpfsInfo && goIpfsInfo.distUrl) 
-  ? pkg['go-ipfs'].distUrl 
+let distUrl = (goIpfsInfo && goIpfsInfo.distUrl)
+  ? pkg['go-ipfs'].distUrl
   : 'https://dist.ipfs.io'
 
 // Main function
 function download (version, platform, arch, installPath) {
   return new Promise((resolve, reject) => {
     //            Environment Variables           Args        Defaults
-    version     = process.env.TARGET_VERSION   || version  || goIpfsVersion
-    platform    = process.env.TARGET_OS        || platform || goenv.GOOS
-    arch        = process.env.TARGET_ARCH      || arch     || goenv.GOARCH
-    distUrl     = process.env.GO_IPFS_DIST_URL || distUrl
+    version = process.env.TARGET_VERSION || version || goIpfsVersion
+    platform = process.env.TARGET_OS || platform || goenv.GOOS
+    arch = process.env.TARGET_ARCH || arch || goenv.GOARCH
+    distUrl = process.env.GO_IPFS_DIST_URL || distUrl
     installPath = installPath ? path.resolve(installPath) : path.resolve(process.cwd())
 
     // Make sure we support the requested package
@@ -92,14 +92,19 @@ function download (version, platform, arch, installPath) {
     process.stdout.write(`Downloading ${url}\n`)
 
     request.get(url, (err, res, body) => {
+      if (err) {
+        // TODO handle error: haad?
+      }
       // Handle errors
-      if (res.statusCode !== 200)
-        error(new Error(`${res.statusCode} - ${res.body}`), reject)
+      if (res.statusCode !== 200) {
+        reject(new Error(`${res.statusCode} - ${res.body}`))
+      }
     })
     .on('response', (res) => {
       // Unpack only if the request was successful
-      if (res.statusCode !== 200)
-        return 
+      if (res.statusCode !== 200) {
+        return
+      }
 
       unpack(res)
     })

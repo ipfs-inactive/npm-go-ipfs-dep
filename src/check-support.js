@@ -5,8 +5,8 @@
 
 // The packages we support
 const supportedPlatforms = ['linux', 'darwin', 'windows', 'freebsd']
-const supportedArchs     = ['amd64', '386', 'arm']
-const supportedVersions  = [
+const supportedArchs = ['amd64', '386', 'arm']
+const supportedVersions = [
   'sharding-pre',
   'v0.3.2',
   'v0.3.4',
@@ -22,13 +22,13 @@ const supportedVersions  = [
   'v0.4.2',
   'v0.4.3',
   'v0.4.4',
-  'v0.4.5-pre1',
+  'v0.4.5-pre1'
 ]
 
 // Check functions
-const isSupportedVersion  = (version) => supportedVersions.indexOf(version) !== -1
+const isSupportedVersion = (version) => supportedVersions.indexOf(version) !== -1
 const isSupportedPlatform = (platform) => supportedPlatforms.indexOf(platform) !== -1
-const isSupportedArch     = (arch) => supportedArchs.indexOf(arch) !== -1
+const isSupportedArch = (arch) => supportedArchs.indexOf(arch) !== -1
 
 // Is the platform Windows?
 const isWindows = (os) => {
@@ -37,14 +37,17 @@ const isWindows = (os) => {
 
 // Validate the requested binary support, throw en error if not supported
 const verify = (version, platform, arch) => {
-  if (!isSupportedArch(arch))
+  if (!isSupportedArch(arch)) {
     throw new Error(`No binary available for arch '${arch}'`)
+  }
 
-  if (!isSupportedPlatform(platform))
+  if (!isSupportedPlatform(platform)) {
     throw new Error(`No binary available for platform '${platform}'`)
+  }
 
-  if (!isSupportedVersion(version))
+  if (!isSupportedVersion(version)) {
     throw new Error(`Version '${version}' not available`)
+  }
 
   return true
 }
@@ -58,5 +61,5 @@ module.exports = {
   isSupportedPlatform: isSupportedPlatform,
   isSupportedArch: isSupportedArch,
   isWindows: isWindows,
-  verify: verify,
+  verify: verify
 }
