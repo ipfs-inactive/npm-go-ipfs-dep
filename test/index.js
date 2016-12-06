@@ -11,7 +11,7 @@ const version = process.env.TARGET_VERSION || 'v' + pkg.version
 
 // These tests won't work with promises, wrap the download function to a callback
 const download = (version, platform, arch, callback) => {
- if (typeof version === 'function' || !version) {
+  if (typeof version === 'function' || !version) {
     callback = version || callback
     version = null
   }
@@ -26,7 +26,11 @@ const download = (version, platform, arch, callback) => {
     arch = null
   }
 
-  callback = callback || ((err, res) => {})
+  callback = callback || ((err, res) => {
+    if (err) {
+      throw err
+    }
+  })
 
   Download(version, platform, arch)
     .then((e) => callback(null, e))
@@ -38,6 +42,7 @@ test('Ensure ipfs gets downloaded (current version and platform)', (t) => {
   const dir = path.resolve(__dirname, '../go-ipfs')
   rimraf.sync(dir)
   download((err, res) => {
+    t.ifErr(err)
     t.ok(res.file.indexOf(`ipfs_${version}_${goenv.GOOS}-${goenv.GOARCH}`) !== -1, 'Returns the correct filename')
     t.ok(res.dir === path.resolve(__dirname, '../', 'go-ipfs') + '/', 'Returns the correct output path')
 
@@ -53,6 +58,7 @@ test('Ensure Windows version gets downloaded', (t) => {
   const dir = path.resolve(__dirname, '../go-ipfs')
   rimraf.sync(dir)
   download(version, 'windows', (err, res) => {
+    t.ifErr(err)
     t.ok(res.file.indexOf(`ipfs_${version}_windows-${goenv.GOARCH}`) !== -1, 'Returns the correct filename')
     t.ok(res.dir === path.resolve(__dirname, '../', 'go-ipfs') + '/', 'Returns the correct output path')
 
@@ -73,6 +79,7 @@ test('Ensure Linux version gets downloaded', (t) => {
   const dir = path.resolve(__dirname, '../go-ipfs')
   rimraf.sync(dir)
   download(version, 'linux', (err, res) => {
+    t.ifErr(err)
     t.ok(res.file.indexOf(`ipfs_${version}_linux-${goenv.GOARCH}`) !== -1, 'Returns the correct filename')
     t.ok(res.dir === path.resolve(__dirname, '../', 'go-ipfs') + '/', 'Returns the correct output path')
 
@@ -93,6 +100,7 @@ test('Ensure OSX version gets downloaded', (t) => {
   const dir = path.resolve(__dirname, '../go-ipfs')
   rimraf.sync(dir)
   download(version, 'darwin', (err, res) => {
+    t.ifErr(err)
     t.ok(res.file.indexOf(`ipfs_${version}_darwin-${goenv.GOARCH}`) !== -1, 'Returns the correct filename')
     t.ok(res.dir === path.resolve(__dirname, '../', 'go-ipfs') + '/', 'Returns the correct output path')
 
@@ -116,6 +124,7 @@ test('Ensure TARGET_OS, TARGET_VERSION and TARGET_ARCH version gets downloaded',
   process.env.TARGET_VERSION = version
   process.env.TARGET_ARCH = '386'
   download((err, res) => {
+    t.ifErr(err)
     t.ok(res.file.indexOf(`ipfs_${process.env.TARGET_VERSION}_${process.env.TARGET_OS}-${process.env.TARGET_ARCH}`) !== -1, 'Returns the correct filename')
     t.ok(res.dir === path.resolve(__dirname, '../', 'go-ipfs') + '/', 'Returns the correct output path')
 
