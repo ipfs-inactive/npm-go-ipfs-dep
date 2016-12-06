@@ -7,7 +7,8 @@ const rimraf = require('rimraf')
 const goenv = require('go-platform')
 const pkg = require('./../package.json')
 const Download = require('../src')
-const version = process.env.TARGET_VERSION || 'v' + pkg.version
+
+const version = process.env.TARGET_VERSION || 'v' + pkg.version.replace(/-[0-9]+/, '')
 
 // These tests won't work with promises, wrap the download function to a callback
 const download = (version, platform, arch, callback) => {
@@ -38,7 +39,7 @@ const download = (version, platform, arch, callback) => {
 }
 
 test('Ensure ipfs gets downloaded (current version and platform)', (t) => {
-  t.plan(4)
+  t.plan(5)
   const dir = path.resolve(__dirname, '../go-ipfs')
   rimraf.sync(dir)
   download((err, res) => {
@@ -54,7 +55,7 @@ test('Ensure ipfs gets downloaded (current version and platform)', (t) => {
 })
 
 test('Ensure Windows version gets downloaded', (t) => {
-  t.plan(6)
+  t.plan(7)
   const dir = path.resolve(__dirname, '../go-ipfs')
   rimraf.sync(dir)
   download(version, 'windows', (err, res) => {
@@ -75,7 +76,7 @@ test('Ensure Windows version gets downloaded', (t) => {
 })
 
 test('Ensure Linux version gets downloaded', (t) => {
-  t.plan(6)
+  t.plan(7)
   const dir = path.resolve(__dirname, '../go-ipfs')
   rimraf.sync(dir)
   download(version, 'linux', (err, res) => {
@@ -96,7 +97,7 @@ test('Ensure Linux version gets downloaded', (t) => {
 })
 
 test('Ensure OSX version gets downloaded', (t) => {
-  t.plan(6)
+  t.plan(7)
   const dir = path.resolve(__dirname, '../go-ipfs')
   rimraf.sync(dir)
   download(version, 'darwin', (err, res) => {
@@ -117,7 +118,7 @@ test('Ensure OSX version gets downloaded', (t) => {
 })
 
 test('Ensure TARGET_OS, TARGET_VERSION and TARGET_ARCH version gets downloaded', (t) => {
-  t.plan(6)
+  t.plan(7)
   const dir = path.resolve(__dirname, '../go-ipfs')
   rimraf.sync(dir)
   process.env.TARGET_OS = 'windows'
