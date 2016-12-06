@@ -153,3 +153,15 @@ test('Returns an error when version unsupported', (t) => {
     t.ok(err.toString() === "Error: Version 'bogusversion' not available", 'Throws the correct error message')
   })
 })
+
+test('Returns an error when dist url is 404', (t) => {
+  t.plan(2)
+  const dir = path.resolve(__dirname, '../go-ipfs')
+  rimraf.sync(dir)
+  process.env.GO_IPFS_DIST_URL = 'https://dist.ipfs.io/notfound'
+  download((err, res) => {
+    t.ok(err !== null, 'Throws an error')
+    t.ok(err.toString().indexOf('Error: 404 - Path Resolve error: no link named "notfound" under') > -1, 'Throws the correct error message')
+    delete process.env.GO_IPFS_DIST_URL
+  })
+})

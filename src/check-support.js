@@ -37,7 +37,9 @@ const isWindows = (os) => {
 
 // Validate the requested binary support, throw en error if not supported
 const verify = (version, platform, arch) => {
-  if (!isSupportedArch(arch)) { throw new Error(`No binary available for arch '${arch}'`) }
+  if (!isSupportedArch(arch)) {
+    throw new Error(`No binary available for arch '${arch}'`)
+  }
 
   if (!isSupportedPlatform(platform)) {
     throw new Error(`No binary available for platform '${platform}'`)

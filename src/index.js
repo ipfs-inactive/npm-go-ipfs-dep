@@ -97,7 +97,7 @@ function download (version, platform, arch, installPath) {
       }
       // Handle errors
       if (res.statusCode !== 200) {
-        error(new Error(`${res.statusCode} - ${res.body}`), reject)
+        reject(new Error(`${res.statusCode} - ${res.body}`))
       }
     })
     .on('response', (res) => {
