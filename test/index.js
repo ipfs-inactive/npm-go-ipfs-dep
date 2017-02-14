@@ -44,8 +44,8 @@ test('Ensure ipfs gets downloaded (current version and platform)', (t) => {
   rimraf.sync(dir)
   download((err, res) => {
     t.ifErr(err)
-    t.ok(res.file.indexOf(`ipfs_${version}_${goenv.GOOS}-${goenv.GOARCH}`) !== -1, 'Returns the correct filename')
-    t.ok(res.dir === path.resolve(__dirname, '../', 'go-ipfs') + '/', 'Returns the correct output path')
+    t.ok(res.fileName.indexOf(`ipfs_${version}_${goenv.GOOS}-${goenv.GOARCH}`) !== -1, 'Returns the correct filename')
+    t.ok(res.installPath === path.resolve(__dirname, '../', 'go-ipfs') + '/', 'Returns the correct output path')
 
     fs.stat(dir, (err, stats) => {
       t.error(err, 'go-ipfs should stat without error')
@@ -60,8 +60,8 @@ test('Ensure Windows version gets downloaded', (t) => {
   rimraf.sync(dir)
   download(version, 'windows', (err, res) => {
     t.ifErr(err)
-    t.ok(res.file.indexOf(`ipfs_${version}_windows-${goenv.GOARCH}`) !== -1, 'Returns the correct filename')
-    t.ok(res.dir === path.resolve(__dirname, '../', 'go-ipfs') + '/', 'Returns the correct output path')
+    t.ok(res.fileName.indexOf(`ipfs_${version}_windows-${goenv.GOARCH}`) !== -1, 'Returns the correct filename')
+    t.ok(res.installPath === path.resolve(__dirname, '../', 'go-ipfs') + '/', 'Returns the correct output path')
 
     fs.stat(dir, (err, stats) => {
       t.error(err, 'go-ipfs for windows should stat without error')
@@ -81,8 +81,8 @@ test('Ensure Linux version gets downloaded', (t) => {
   rimraf.sync(dir)
   download(version, 'linux', (err, res) => {
     t.ifErr(err)
-    t.ok(res.file.indexOf(`ipfs_${version}_linux-${goenv.GOARCH}`) !== -1, 'Returns the correct filename')
-    t.ok(res.dir === path.resolve(__dirname, '../', 'go-ipfs') + '/', 'Returns the correct output path')
+    t.ok(res.fileName.indexOf(`ipfs_${version}_linux-${goenv.GOARCH}`) !== -1, 'Returns the correct filename')
+    t.ok(res.installPath === path.resolve(__dirname, '../', 'go-ipfs') + '/', 'Returns the correct output path')
 
     fs.stat(dir, (err, stats) => {
       t.error(err, 'go-ipfs for linux should stat without error')
@@ -102,8 +102,8 @@ test('Ensure OSX version gets downloaded', (t) => {
   rimraf.sync(dir)
   download(version, 'darwin', (err, res) => {
     t.ifErr(err)
-    t.ok(res.file.indexOf(`ipfs_${version}_darwin-${goenv.GOARCH}`) !== -1, 'Returns the correct filename')
-    t.ok(res.dir === path.resolve(__dirname, '../', 'go-ipfs') + '/', 'Returns the correct output path')
+    t.ok(res.fileName.indexOf(`ipfs_${version}_darwin-${goenv.GOARCH}`) !== -1, 'Returns the correct filename')
+    t.ok(res.installPath === path.resolve(__dirname, '../', 'go-ipfs') + '/', 'Returns the correct output path')
 
     fs.stat(dir, (err, stats) => {
       t.error(err, 'go-ipfs for OSX should stat without error')
@@ -126,8 +126,8 @@ test('Ensure TARGET_OS, TARGET_VERSION and TARGET_ARCH version gets downloaded',
   process.env.TARGET_ARCH = '386'
   download((err, res) => {
     t.ifErr(err)
-    t.ok(res.file.indexOf(`ipfs_${process.env.TARGET_VERSION}_${process.env.TARGET_OS}-${process.env.TARGET_ARCH}`) !== -1, 'Returns the correct filename')
-    t.ok(res.dir === path.resolve(__dirname, '../', 'go-ipfs') + '/', 'Returns the correct output path')
+    t.ok(res.fileName.indexOf(`ipfs_${process.env.TARGET_VERSION}_${process.env.TARGET_OS}-${process.env.TARGET_ARCH}`) !== -1, 'Returns the correct filename')
+    t.ok(res.installPath === path.resolve(__dirname, '../', 'go-ipfs') + '/', 'Returns the correct output path')
 
     fs.stat(dir, (err, stats) => {
       t.error(err, 'go-ipfs for windows should stat without error')
