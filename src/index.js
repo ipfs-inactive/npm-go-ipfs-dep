@@ -66,7 +66,10 @@ function download (version, platform, arch, installPath) {
 
     // Success callback wrapper
     // go-ipfs contents are in 'go-ipfs/', so append that to the path
-    const done = () => resolve({ file: fileName, dir: path.join(installPath, '/go-ipfs/') })
+    const done = () => resolve({
+      fileName: fileName,
+      installPath: path.join(installPath, '/go-ipfs/')
+    })
 
     // Unpack the response stream
     const unpack = (stream) => {
