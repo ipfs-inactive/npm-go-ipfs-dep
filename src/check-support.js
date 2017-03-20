@@ -22,7 +22,9 @@ const supportedVersions = [
   'v0.4.2',
   'v0.4.3',
   'v0.4.4',
-  'v0.4.5'
+  'v0.4.5',
+  'v0.4.6',
+  'v0.4.7'
 ]
 
 // Check functions
@@ -31,12 +33,12 @@ const isSupportedPlatform = (platform) => supportedPlatforms.indexOf(platform) !
 const isSupportedArch = (arch) => supportedArchs.indexOf(arch) !== -1
 
 // Is the platform Windows?
-const isWindows = (os) => {
+function isWindows (os) {
   return os === 'windows'
 }
 
 // Validate the requested binary support, throw en error if not supported
-const verify = (version, platform, arch) => {
+function verify (version, platform, arch) {
   if (!isSupportedArch(arch)) {
     throw new Error(`No binary available for arch '${arch}'`)
   }

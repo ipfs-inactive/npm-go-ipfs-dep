@@ -11,7 +11,7 @@ const Download = require('../src')
 const version = process.env.TARGET_VERSION || 'v' + pkg.version.replace(/-[0-9]+/, '')
 
 // These tests won't work with promises, wrap the download function to a callback
-const download = (version, platform, arch, callback) => {
+function download (version, platform, arch, callback) {
   if (typeof version === 'function' || !version) {
     callback = version || callback
     version = null
@@ -34,17 +34,19 @@ const download = (version, platform, arch, callback) => {
   })
 
   Download(version, platform, arch)
-    .then((e) => callback(null, e))
-    .catch((e) => callback(e))
+    .then((artifact) => callback(null, artifact))
+    .catch((err) => callback(err))
 }
 
 test('Ensure ipfs gets downloaded (current version and platform)', (t) => {
   t.plan(5)
   const dir = path.resolve(__dirname, '../go-ipfs')
   rimraf.sync(dir)
+
   download((err, res) => {
     t.ifErr(err)
     t.ok(res.fileName.indexOf(`ipfs_${version}_${goenv.GOOS}-${goenv.GOARCH}`) !== -1, 'Returns the correct filename')
+
     t.ok(res.installPath === path.resolve(__dirname, '../', 'go-ipfs') + '/', 'Returns the correct output path')
 
     fs.stat(dir, (err, stats) => {
