@@ -24,7 +24,9 @@ const supportedVersions = [
   'v0.4.4',
   'v0.4.5',
   'v0.4.6',
-  'v0.4.7'
+  'v0.4.7',
+  'v0.4.8',
+  'v0.4.9'
 ]
 
 // Check functions
