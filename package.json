@@ -1,9 +1,9 @@
 {
   "name": "go-ipfs-dep",
-  "version": "0.4.10",
+  "version": "0.4.11",
   "description": "Install the latest go-ipfs binary",
   "go-ipfs": {
-    "version": "v0.4.10"
+    "version": "v0.4.11"
   },
   "main": "src/index.js",
   "engines": {
@@ -26,8 +26,8 @@
   "dependencies": {
     "go-platform": "^1.0.0",
     "gunzip-maybe": "^1.4.1",
-    "request": "^2.81.0",
-    "tar-fs": "^1.15.3",
+    "request": "^2.83.0",
+    "tar-fs": "^1.16.0",
     "unzip": "^0.1.11"
   },
   "keywords": [
@@ -42,7 +42,7 @@
   "homepage": "https://github.com/ipfs/npm-go-ipfs-dep",
   "devDependencies": {
     "pre-commit": "^1.2.2",
-    "rimraf": "^2.6.1",
+    "rimraf": "^2.6.2",
     "standard": "^10.0.3",
     "tap-spec": "^4.1.1",
     "tape": "^4.8.0"
