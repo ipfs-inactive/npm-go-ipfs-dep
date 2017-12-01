@@ -125,7 +125,11 @@ test('Ensure TARGET_OS, TARGET_VERSION and TARGET_ARCH version gets downloaded',
   rimraf.sync(dir)
   process.env.TARGET_OS = 'windows'
   process.env.TARGET_VERSION = version
-  process.env.TARGET_ARCH = '386'
+
+  // TODO solve this https://github.com/ipfs/distributions/issues/165
+  // process.env.TARGET_ARCH = '386'
+  process.env.TARGET_ARCH = 'amd64'
+
   download((err, res) => {
     t.ifErr(err)
     t.ok(res.fileName.indexOf(`ipfs_${process.env.TARGET_VERSION}_${process.env.TARGET_OS}-${process.env.TARGET_ARCH}`) !== -1, 'Returns the correct filename')
