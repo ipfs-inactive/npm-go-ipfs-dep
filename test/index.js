@@ -119,14 +119,16 @@ test('Ensure OSX version gets downloaded', (t) => {
   })
 })
 
-// TODO solve this https://github.com/ipfs/distributions/issues/165
-test.skip('Ensure TARGET_OS, TARGET_VERSION and TARGET_ARCH version gets downloaded', (t) => {
+test('Ensure TARGET_OS, TARGET_VERSION and TARGET_ARCH version gets downloaded', (t) => {
   t.plan(7)
   const dir = path.resolve(__dirname, '../go-ipfs')
   rimraf.sync(dir)
   process.env.TARGET_OS = 'windows'
   process.env.TARGET_VERSION = version
-  process.env.TARGET_ARCH = '386'
+
+  // TODO solve this https://github.com/ipfs/distributions/issues/165
+  // process.env.TARGET_ARCH = '386'
+  process.env.TARGET_ARCH = 'amd64'
 
   download((err, res) => {
     t.ifErr(err)
