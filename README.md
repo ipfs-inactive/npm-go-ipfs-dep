@@ -12,7 +12,7 @@ Install go-ipfs from npm as a dependency of your project
 # Installation
 
 ```
-npm install go-ipfs --save
+npm install go-ipfs-dep --save
 ```
 
 See [IPFS getting-started](http://ipfs.io/docs/getting-started). If anything goes wrong, try using: [http://ipfs.io/docs/install](http://ipfs.io/docs/install).
@@ -27,7 +27,7 @@ Can be specified in `package.json` with a field `go-ipfs.version`, eg:
 
 ```json
 "go-ipfs": {
-  "version": "v0.4.5-pre1"
+  "version": "v0.4.13"
 },
 ```
 
@@ -36,7 +36,7 @@ Can be specified in `package.json` with a field `go-ipfs.version`, eg:
 
 ```json
 "go-ipfs": {
-  "version": "v0.4.5-pre1",
+  "version": "v0.4.3",
   "distUrl": "http://localhost:8080/ipfs/QmSoNtqW22htkg9mtHWNBvZLUEmqfq8su7957meS1iQfeL"
 },
 ```
@@ -71,7 +71,7 @@ node src/bin.js <version> <platform> <architecture> <install directory>
 ```
 
 ```
-node src/bin.js v0.4.5-pre1 linux amd64 ./go-ipfs
+node src/bin.js v0.4.3 linux amd64 ./go-ipfs
 ```
 
 ### API
