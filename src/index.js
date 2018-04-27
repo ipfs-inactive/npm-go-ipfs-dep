@@ -23,6 +23,7 @@ const goenv = require('go-platform')
 const gunzip = require('gunzip-maybe')
 const path = require('path')
 const request = require('request')
+const fs = require('fs')
 const tarFS = require('tar-fs')
 const unzip = require('unzip-stream')
 const support = require('./check-support')
@@ -38,6 +39,22 @@ const goIpfsVersion = (goIpfsInfo && goIpfsInfo.version)
 let distUrl = (goIpfsInfo && goIpfsInfo.distUrl)
   ? pkg['go-ipfs'].distUrl
   : 'https://dist.ipfs.io'
+
+const hasIpfs = (installPath, name) => new Promise((resolve, reject) => {
+  fs.readdir(installPath, (error, files) => {
+    if (error) resolve(false);
+    else
+      for (const file of files) {
+        if (file.includes(name)) {
+          return fs.readFile(path.join(installPath, 'version'), (error, data) => {
+            if (error) return reject(error)
+            return resolve({ version: data.toString() })
+          });
+        }
+      }
+      resolve(false)
+  });
+});
 
 // Main function
 function download (version, platform, arch, installPath) {
@@ -63,13 +80,17 @@ function download (version, platform, arch, installPath) {
     const fileExtension = isWindows ? '.zip' : '.tar.gz'
     const fileName = 'ipfs_' + version + '_' + platform + '-' + arch + fileExtension
     const url = distUrl + '/go-ipfs/' + version + '/go-' + fileName
-
     // Success callback wrapper
     // go-ipfs contents are in 'go-ipfs/', so append that to the path
-    const done = () => resolve({
-      fileName: fileName,
-      installPath: path.join(installPath, '/go-ipfs/')
-    })
+    const done = () => {
+      fs.writeFile(path.join(installPath, '/go-ipfs/version'), version, error => {
+        if (error) return reject(error)
+        resolve({
+          fileName: fileName,
+          installPath: path.join(installPath, '/go-ipfs/')
+        })
+      })
+    }
 
     // Unpack the response stream
     const unpack = (stream) => {
@@ -91,27 +112,33 @@ function download (version, platform, arch, installPath) {
         )
     }
 
-    // Start
-    process.stdout.write(`Downloading ${url}\n`)
+    // Check if go-ipfs is installed already
+    hasIpfs(path.join(installPath, '/go-ipfs/'), 'ipfs').then(installed => {
+      if (installed && installed.version === version) { return done() }
 
-    request.get(url, (err, res, body) => {
-      if (err) {
-        // TODO handle error: haad?
-        return reject(err)
-      }
-      // Handle errors
-      if (res.statusCode !== 200) {
-        reject(new Error(`${res.statusCode} - ${res.body}`))
-      }
-    })
+      // Start
+      process.stdout.write(`Downloading ${url}\n`)
+
+      request.get(url, (err, res, body) => {
+        if (err) {
+          // TODO handle error: haad?
+          return reject(err)
+        }
+        // Handle errors
+        if (res.statusCode !== 200) {
+          reject(new Error(`${res.statusCode} - ${res.body}`))
+        }
+      })
       .on('response', (res) => {
-      // Unpack only if the request was successful
+        // Unpack only if the request was successful
         if (res.statusCode !== 200) {
           return
         }
 
         unpack(res)
       })
+    })
+
   })
 }
 
