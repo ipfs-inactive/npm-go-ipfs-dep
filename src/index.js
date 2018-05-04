@@ -103,14 +103,14 @@ function download (version, platform, arch, installPath) {
         reject(new Error(`${res.statusCode} - ${res.body}`))
       }
     })
-    .on('response', (res) => {
+      .on('response', (res) => {
       // Unpack only if the request was successful
-      if (res.statusCode !== 200) {
-        return
-      }
+        if (res.statusCode !== 200) {
+          return
+        }
 
-      unpack(res)
-    })
+        unpack(res)
+      })
   })
 }
 
