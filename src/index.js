@@ -24,7 +24,7 @@ const gunzip = require('gunzip-maybe')
 const path = require('path')
 const request = require('request')
 const tarFS = require('tar-fs')
-const unzip = require('unzip')
+const unzip = require('unzip-stream')
 const support = require('./check-support')
 const pkg = require('./../package.json')
 
@@ -103,14 +103,14 @@ function download (version, platform, arch, installPath) {
         reject(new Error(`${res.statusCode} - ${res.body}`))
       }
     })
-    .on('response', (res) => {
+      .on('response', (res) => {
       // Unpack only if the request was successful
-      if (res.statusCode !== 200) {
-        return
-      }
+        if (res.statusCode !== 200) {
+          return
+        }
 
-      unpack(res)
-    })
+        unpack(res)
+      })
   })
 }
 
