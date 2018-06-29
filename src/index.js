@@ -97,6 +97,7 @@ function download (version, platform, arch, installPath) {
     request.get(url, (err, res, body) => {
       if (err) {
         // TODO handle error: haad?
+        return reject(err)
       }
       // Handle errors
       if (res.statusCode !== 200) {
