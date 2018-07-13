@@ -73,7 +73,3 @@ node src/bin.js <version> <platform> <architecture> <install directory>
 ```
 node src/bin.js v0.4.3 linux amd64 ./go-ipfs
 ```
-
-### API
-
-For programmatic usage, see https://github.com/haadcode/go-ipfs-dep/blob/master/src/index.js#L18
