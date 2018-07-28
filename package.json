@@ -1,6 +1,6 @@
 {
   "name": "go-ipfs-dep",
-  "version": "0.4.16",
+  "version": "0.4.17",
   "description": "Install the latest go-ipfs binary",
   "main": "src/index.js",
   "engines": {
@@ -12,10 +12,6 @@
     "test": "tape test/*.js | tap-spec",
     "lint": "standard"
   },
-  "pre-push": [
-    "lint",
-    "test"
-  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ipfs/npm-go-ipfs-dep.git"
