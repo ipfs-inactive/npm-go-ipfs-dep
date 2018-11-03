@@ -34,7 +34,8 @@ const supportedVersions = [
   'v0.4.14',
   'v0.4.15',
   'v0.4.16',
-  'v0.4.17'
+  'v0.4.17',
+  'v0.4.18'
 ]
 
 // Check functions
