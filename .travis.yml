@@ -1,0 +1,28 @@
+language: node_js
+cache: npm
+stages:
+  - check
+  - test
+
+node_js:
+  - '10'
+
+os:
+  - linux
+  - osx
+
+script: npm run test
+
+jobs:
+  include:
+    - os: windows
+      cache: false
+
+    - stage: check
+      script:
+        - npx aegir commitlint --travis
+        - npx aegir dep-check
+        - npm run lint
+
+notifications:
+  email: false
