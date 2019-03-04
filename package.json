@@ -20,7 +20,7 @@
     "go-platform": "^1.0.0",
     "gunzip-maybe": "^1.4.1",
     "request": "^2.88.0",
-    "tar-fs": "^1.16.3",
+    "tar-fs": "^2.0.0",
     "unzip-stream": "^0.3.0"
   },
   "keywords": [
