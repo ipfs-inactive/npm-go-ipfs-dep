@@ -167,7 +167,7 @@ test('Returns an error when dist url is 404', (t) => {
   process.env.GO_IPFS_DIST_URL = 'https://dist.ipfs.io/notfound'
   download((err, res) => {
     t.ok(err, 'Throws an error')
-    t.ok(err.toString().indexOf('Error: 404') > -1, 'Throws the correct error message')
+    t.ok(err.toString().indexOf('404') > -1, 'Throws the correct error message')
     delete process.env.GO_IPFS_DIST_URL
   })
 })

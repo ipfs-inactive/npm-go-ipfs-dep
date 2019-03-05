@@ -51,7 +51,7 @@ function unpack ({ url, installPath, stream }) {
 
 async function download ({ installPath, url }) {
   const res = await fetch(url)
-  if (!res.ok) throw new Error(`unexpected status ${res.status}`)
+  if (!res.ok) throw new Error(`Unexpected status: ${res.status}`)
   return unpack({ url, installPath, stream: res.body })
 }
 
