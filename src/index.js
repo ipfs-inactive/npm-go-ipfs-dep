@@ -80,7 +80,7 @@ function cleanArguments (version, platform, arch, installPath) {
     platform: process.env.TARGET_OS || platform || goenv.GOOS,
     arch: process.env.TARGET_ARCH || arch || goenv.GOARCH,
     distUrl: process.env.GO_IPFS_DIST_URL || distUrl,
-    installPath: installPath ? path.resolve(installPath) : path.resolve(process.cwd())
+    installPath: installPath ? path.resolve(installPath) : process.cwd()
   }
 }
 
