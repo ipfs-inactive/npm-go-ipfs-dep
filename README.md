@@ -52,21 +52,12 @@ GO_IPFS_DIST_URL=http://localhost:8080/ipfs/QmSoNtqW22htkg9mtHWNBvZLUEmqfq8su795
 
 ### Arguments
 
-When used via `node src/bin.js`, you can specify the target platform, version and architecture via environment variables:
+When used via `node src/bin.js`, you can specify the target platform, version and architecture via environment variables: `TARGET_OS`, `TARGET_VERSION` and `TARGET_ARCH`.
 
-`TARGET_OS`
+We fetch the versions dynamically from `https://dist.ipfs.io/go-ipfs/versions` and the OSes and architectures from `https://dist.ipfs.io/go-ipfs/${VERSION}/dist.json`.
 
-See: [Supported Platforms](https://github.com/haadcode/go-ipfs-dep/blob/master/src/supported-platforms.js) for possible values.
+Or via command line arguments in the order of:
 
-`TARGET_VERSION`
-
-See: [Supported Versions](https://github.com/haadcode/go-ipfs-dep/blob/master/src/supported-versions.js) for possible values.
-
-`TARGET_ARCH`
-
-See: [Supported Architectures](https://github.com/haadcode/go-ipfs-dep/blob/master/src/checkPlatform.js#L4) for possible values.
-
-Or via command line arguments in the order of: 
 ```
 node src/bin.js <version> <platform> <architecture> <install directory>
 ```
