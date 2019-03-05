@@ -19,7 +19,7 @@
   "dependencies": {
     "go-platform": "^1.0.0",
     "gunzip-maybe": "^1.4.1",
-    "request": "^2.88.0",
+    "node-fetch": "^2.3.0",
     "tar-fs": "^2.0.0",
     "unzip-stream": "^0.3.0"
   },

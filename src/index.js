@@ -22,9 +22,9 @@
 const goenv = require('go-platform')
 const gunzip = require('gunzip-maybe')
 const path = require('path')
-const request = require('request')
 const tarFS = require('tar-fs')
 const unzip = require('unzip-stream')
+const fetch = require('node-fetch')
 const pkg = require('./../package.json')
 
 function unpack ({ url, installPath, stream }) {
@@ -49,19 +49,10 @@ function unpack ({ url, installPath, stream }) {
   })
 }
 
-function download ({ installPath, url }) {
-  return new Promise((resolve, reject) => {
-    request.get(url, (err, res, body) => {
-      if (err) return reject(err)
-      if (res.statusCode !== 200) reject(new Error(`${res.statusCode} - ${res.body}`))
-    }).on('response', (res) => {
-      if (res.statusCode !== 200) return
-
-      unpack({ url, installPath, stream: res })
-        .then(resolve)
-        .catch(reject)
-    })
-  })
+async function download ({ installPath, url }) {
+  const res = await fetch(url)
+  if (!res.ok) throw new Error(`unexpected status ${res.status}`)
+  return unpack({ url, installPath, stream: res.body })
 }
 
 function cleanArguments (version, platform, arch, installPath) {
@@ -84,19 +75,9 @@ function cleanArguments (version, platform, arch, installPath) {
   }
 }
 
-function get (url) {
-  return new Promise((resolve, reject) => {
-    request.get(url, (err, res, body) => {
-      if (err) return reject(err)
-      if (res.statusCode !== 200) return reject(new Error(`${res.statusCode} - ${res.body}`))
-      resolve(body)
-    })
-  })
-}
-
 async function ensureVersion ({ version, distUrl }) {
-  const res = await get(`${distUrl}/go-ipfs/versions`)
-  const versions = res.trim().split('\n')
+  const res = await fetch(`${distUrl}/go-ipfs/versions`)
+  const versions = (await res.text()).trim().split('\n')
 
   if (versions.indexOf(version) === -1) {
     throw new Error(`Version '${version}' not available`)
@@ -106,8 +87,8 @@ async function ensureVersion ({ version, distUrl }) {
 async function getDownloadURL ({ version, platform, arch, distUrl }) {
   await ensureVersion({ version, distUrl })
 
-  const dist = await get(`${distUrl}/go-ipfs/${version}/dist.json`)
-  const data = JSON.parse(dist)
+  const dist = await fetch(`${distUrl}/go-ipfs/${version}/dist.json`)
+  const data = await dist.json()
 
   if (!data.platforms[platform]) {
     throw new Error(`No binary available for platform '${platform}'`)
