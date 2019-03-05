@@ -131,6 +131,6 @@ module.exports = async function () {
 
   return {
     fileName: url.split('/').pop(),
-    installPath: path.join(args.installPath, '/go-ipfs/')
+    installPath: path.join(args.installPath, 'go-ipfs')
   }
 }
