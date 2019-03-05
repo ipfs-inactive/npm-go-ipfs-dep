@@ -96,7 +96,7 @@ function get (url) {
 
 async function ensureVersion ({ version, distUrl }) {
   const res = await get(`${distUrl}/go-ipfs/versions`)
-  const versions = res.split('\n').filter(el => el !== '')
+  const versions = res.trim().split('\n')
 
   if (versions.indexOf(version) === -1) {
     throw new Error(`Version '${version}' not available`)
