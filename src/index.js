@@ -77,6 +77,7 @@ function cleanArguments (version, platform, arch, installPath) {
 
 async function ensureVersion ({ version, distUrl }) {
   const res = await fetch(`${distUrl}/go-ipfs/versions`)
+  if (!res.ok) throw new Error(`Unexpected status: ${res.status}`)
   const versions = (await res.text()).trim().split('\n')
 
   if (versions.indexOf(version) === -1) {
@@ -87,8 +88,9 @@ async function ensureVersion ({ version, distUrl }) {
 async function getDownloadURL ({ version, platform, arch, distUrl }) {
   await ensureVersion({ version, distUrl })
 
-  const dist = await fetch(`${distUrl}/go-ipfs/${version}/dist.json`)
-  const data = await dist.json()
+  const res = await fetch(`${distUrl}/go-ipfs/${version}/dist.json`)
+  if (!res.ok) throw new Error(`Unexpected status: ${res.status}`)
+  const data = await res.json()
 
   if (!data.platforms[platform]) {
     throw new Error(`No binary available for platform '${platform}'`)
