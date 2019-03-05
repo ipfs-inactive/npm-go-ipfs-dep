@@ -103,7 +103,7 @@ async function ensureVersion ({ version, distUrl }) {
   }
 }
 
-async function getURL ({ version, platform, arch, distUrl }) {
+async function getDownloadURL ({ version, platform, arch, distUrl }) {
   await ensureVersion({ version, distUrl })
 
   const dist = await get(`${distUrl}/go-ipfs/${version}/dist.json`)
@@ -123,7 +123,7 @@ async function getURL ({ version, platform, arch, distUrl }) {
 
 module.exports = async function () {
   const args = cleanArguments(...arguments)
-  const url = await getURL(args)
+  const url = await getDownloadURL(args)
 
   process.stdout.write(`Downloading ${url}\n`)
 
