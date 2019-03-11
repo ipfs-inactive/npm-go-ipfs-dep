@@ -1,6 +1,6 @@
 {
   "name": "go-ipfs-dep",
-  "version": "0.4.18",
+  "version": "0.4.19-0",
   "description": "Install the latest go-ipfs binary",
   "main": "src/index.js",
   "engines": {
@@ -39,5 +39,17 @@
     "standard": "^12.0.1",
     "tap-spec": "^5.0.0",
     "tape": "^4.9.1"
-  }
+  },
+  "contributors": [
+    "Alex Potsides <alex@achingbrain.net>",
+    "David Dias <daviddias.p@gmail.com>",
+    "Edward Silverton <e.silverton@gmail.com>",
+    "Friedel Ziegelmayer <dignifiedquire@gmail.com>",
+    "Haad <haadcode@users.noreply.github.com>",
+    "Harlan T Wood <harlantwood@users.noreply.github.com>",
+    "Henrique Dias <hacdias@gmail.com>",
+    "Scott Hardy <scott.the.hardy@gmail.com>",
+    "Stephen Whitmore <stephen.whitmore@gmail.com>",
+    "haad <haad@headbanggames.com>"
+  ]
 }
