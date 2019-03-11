@@ -5,6 +5,7 @@ node_modules
 *.log
 go-ipfs
 .vscode
+docs
 
 # Coverage directory used by tools like istanbul
 coverage
