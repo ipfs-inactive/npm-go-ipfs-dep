@@ -65,3 +65,19 @@ node src/bin.js <version> <platform> <architecture> <install directory>
 ```
 node src/bin.js v0.4.3 linux amd64 ./go-ipfs
 ```
+
+## Deployment
+
+### Prerelease
+
+You have made changes and want to triple check everything is working. You can! If you publish with a numeric prerelease identifier then `go-ipfs-dep` will strip it and install the corresponding version e.g. `0.4.19-0` installs `go-ipfs` version `0.4.19`.
+
+To deploy a new version with a prerelease identifier run the following command:
+
+```sh
+npx aegir release --type prepatch --preid '' --dist-tag next --no-lint --no-test --no-build
+# Note: change "--type prepatch" to the appropriate prerelease type.
+# e.g. prepatch: 0.4.18 => 0.4.19-0, preminor: 0.4.18 => 0.5.0-0 etc.
+```
+
+This publishes to the "next" tag meaning that the current "latest" version of `go-ipfs-dep` will remain the same.
