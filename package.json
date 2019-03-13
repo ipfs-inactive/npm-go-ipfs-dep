@@ -1,6 +1,6 @@
 {
   "name": "go-ipfs-dep",
-  "version": "0.4.19-0",
+  "version": "0.4.19",
   "description": "Install the latest go-ipfs binary",
   "main": "src/index.js",
   "engines": {
@@ -41,6 +41,7 @@
     "tape": "^4.9.1"
   },
   "contributors": [
+    "Alan Shaw <alan.shaw@protocol.ai>",
     "Alex Potsides <alex@achingbrain.net>",
     "David Dias <daviddias.p@gmail.com>",
     "Edward Silverton <e.silverton@gmail.com>",
