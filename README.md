@@ -78,6 +78,15 @@ To deploy a new version with a prerelease identifier run the following command:
 npx aegir release --type prepatch --preid '' --dist-tag next --no-lint --no-test --no-build
 # Note: change "--type prepatch" to the appropriate prerelease type.
 # e.g. prepatch: 0.4.18 => 0.4.19-0, preminor: 0.4.18 => 0.5.0-0 etc.
+
+# Increment prerelease (e.g. 0.4.19-0 -> 0.4.19-1)
+npx aegir release --type prerelease --preid '' --dist-tag next --no-lint --no-test --no-build
 ```
 
 This publishes to the "next" tag meaning that the current "latest" version of `go-ipfs-dep` will remain the same.
+
+When you're finally ready to release:
+
+```sh
+npx aegir release --type=patch --no-lint --no-test --no-build
+```
