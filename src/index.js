@@ -56,7 +56,7 @@ async function download ({ installPath, url }) {
   return unpack({ url, installPath, stream: res.body })
 }
 
-async function cleanArguments (version, platform, arch, installPath) {
+function cleanArguments (version, platform, arch, installPath) {
   const conf = pkgConf.sync('go-ipfs', {
     cwd: path.join(process.cwd(), '..'),
     defaults: {
