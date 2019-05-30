@@ -28,7 +28,7 @@ test.onFinish(() => {
   rimraf.sync(path.join('fixture', 'example-project', 'node_modules'))
 })
 
-test.only('Ensure go-ipfs.version defined in parent package.json is used', (t) => {
+test('Ensure go-ipfs.version defined in parent package.json is used', (t) => {
   const tarballName = packTarball()
   // from `example-project`, install the module
   const res = execa.sync('npm', ['install', '--no-save', path.join('..', '..', tarballName)], {
