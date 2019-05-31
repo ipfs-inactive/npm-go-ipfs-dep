@@ -4,7 +4,7 @@ workflow "New workflow" {
 }
 
 action "Check for go-ipfs release" {
-  uses = "./action-publish"
+  uses = "./action-check-for-go-ipfs-release"
 }
 
 action "Build" {
@@ -22,5 +22,5 @@ action "Test" {
 action "Version" {
   needs = "Test"
   uses = "actions/npm@master"
-  args = "version $LATEST"
+  runs = "sh -c \"echo $LATEST && npm version $LATEST\""
 }
