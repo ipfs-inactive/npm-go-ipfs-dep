@@ -3,7 +3,7 @@ set -eu
 
 echo '💫 Checking for new releases...'
 
-CURRENT=`cat package.json | jq .version`
+CURRENT=`node -e 'console.log(require("./package.json").version)'`
 LATEST=`curl --silent https://dist.ipfs.io/go-ipfs/versions | tail -n 1 | cut -c 2-`
 
 if [[ "$CURRENT" != "$LATEST" ]]; then

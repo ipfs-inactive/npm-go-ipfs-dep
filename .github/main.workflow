@@ -1,5 +1,5 @@
 workflow "New workflow" {
-  on = "schedule(*/5 * * * *)"
+  on = "schedule(*/3 * * * *)"
   resolves = ["Version"]
 }
 
