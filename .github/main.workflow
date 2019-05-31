@@ -1,6 +1,6 @@
 workflow "New workflow" {
   on = "schedule(*/3 * * * *)"
-  resolves = ["Version"]
+  resolves = ["Version and publish"]
 }
 
 action "Check for go-ipfs release" {
