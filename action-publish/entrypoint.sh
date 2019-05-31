@@ -36,7 +36,7 @@ if [[ "$CURRENT" != "$LATEST" ]]; then
   npm publish --access public
   echo "📦 published $LATEST to npm"
 
-  git push
+  git push -u origin master
   git push --tags
   echo "👍 pushed changes back to master"
 
