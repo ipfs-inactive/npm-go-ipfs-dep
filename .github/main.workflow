@@ -19,8 +19,8 @@ action "Test" {
   args = "test"
 }
 
-action "Version" {
+action "Version and publish" {
   needs = "Test"
-  uses = "actions/npm@master"
-  runs = "sh -c \"echo $LATEST && npm version $LATEST\""
+  uses = "./actions-publish"
+  secrets = ["GITHUB_TOKEN", "NPM_AUTH_TOKEN"]
 }
