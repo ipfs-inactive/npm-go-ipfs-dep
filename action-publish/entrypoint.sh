@@ -7,10 +7,11 @@ CURRENT=`cat package.json | jq .version`
 LATEST=`curl --silent https://dist.ipfs.io/go-ipfs/versions | tail -n 1 | cut -c 2-`
 
 if [[ "$CURRENT" != "$LATEST" ]]; then
+  echo "🎉 Creating new release for $LATEST"
   # the workspace starts as a detached commit, so get master.
-  git checkout -b master
-  git config --global user.name "${GITHUB_ACTOR}"
-  git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+ git checkout -b master
+ git config --global user.name "${GITHUB_ACTOR}"
+ git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
 
   npm install
   npm version $LATEST
