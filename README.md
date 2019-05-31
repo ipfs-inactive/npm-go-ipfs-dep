@@ -1,6 +1,6 @@
-Install go-ipfs from npm as a dependency of your project
-========================================================
+# go-ipfs-dep
 
+> Download [go-ipfs](https://github.com/ipfs/go-ipfs/) to your node_modules.
 
 [![](https://img.shields.io/badge/made%20by-Protocol%20Labs-blue.svg?style=flat-square)](http://ipn.io)
 [![](https://img.shields.io/badge/project-IPFS-blue.svg?style=flat-square)](http://ipfs.io/)
@@ -8,7 +8,6 @@ Install go-ipfs from npm as a dependency of your project
 [![Travis CI](https://flat.badgen.net/travis/ipfs/npm-go-ipfs-dep)](https://travis-ci.com/ipfs/npm-go-ipfs-dep)
 [![Dependency Status](https://david-dm.org/ipfs/npm-go-ipfs.svg?style=flat-square)](https://david-dm.org/ipfs/npm-go-ipfs)
 
-> Install the latest [go-ipfs](https://github.com/ipfs/go-ipfs/) binary from [http://dist.ipfs.io](http://dist.ipfs.io)
 
 # Installation
 
@@ -18,13 +17,15 @@ npm install go-ipfs-dep --save
 
 See [IPFS getting-started](http://ipfs.io/docs/getting-started). If anything goes wrong, try using: [http://ipfs.io/docs/install](http://ipfs.io/docs/install).
 
-## Development
+## Usage
 
-**Warning**: The binary gets put in the `go-ipfs` folder inside the module folder.
+This module downloads `go-ipfs` binaries from https://dist.ipfs.io into your project.
 
-### Which go-ipfs version this package downloads?
+By default it will download the go-ipfs version that matches the npm version of this module. So depending on `go-ipfs-dep@0.4.19` will install `go-ipfs v0.4.19` for your current system architecture, in to your project at `node_modules/go-ipfs-dep/go-ipfs/ipfs`.
 
-Can be specified in `package.json` with a field `go-ipfs.version`, eg:
+### Overriding the go-ipfs version
+
+You can override the version of go-ipfs that gets downloaded by adding by adding a `go-ipfs.version` field to your `package.json`
 
 ```json
 "go-ipfs": {
@@ -33,7 +34,8 @@ Can be specified in `package.json` with a field `go-ipfs.version`, eg:
 ```
 
 ### Using local IPFS daemon as the package download url
-Can be specified in `package.json` with a field `go-ipfs.version`, eg:
+
+The url to download the binaries from can be specified by adding a field `go-ipfs.distUrl` field to your `package.json`, eg:
 
 ```json
 "go-ipfs": {
@@ -65,6 +67,10 @@ node src/bin.js <version> <platform> <architecture> <install directory>
 ```
 node src/bin.js v0.4.3 linux amd64 ./go-ipfs
 ```
+
+## Development
+
+**Note**: The binary gets put in the `go-ipfs` folder inside the module folder.
 
 ## Deployment
 
