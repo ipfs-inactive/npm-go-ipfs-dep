@@ -21,6 +21,6 @@ action "Test" {
 
 action "Version and publish" {
   needs = "Test"
-  uses = "./actions-publish"
+  uses = "./action-publish"
   secrets = ["GITHUB_TOKEN", "NPM_AUTH_TOKEN"]
 }
