@@ -1,9 +1,26 @@
 workflow "New workflow" {
   on = "schedule(*/5 * * * *)"
-  resolves = ["Update and publish"]
+  resolves = ["Version"]
 }
 
-action "Update and publish" {
+action "Check for go-ipfs release" {
   uses = "./action-publish"
-  secrets = ["GITHUB_TOKEN", "NPM_AUTH_TOKEN"]
+}
+
+action "Build" {
+  needs = "Check for go-ipfs release"
+  uses = "actions/npm@master"
+  args = "install"
+}
+
+action "Test" {
+  needs = "Build"
+  uses = "actions/npm@master"
+  args = "test"
+}
+
+action "Version" {
+  needs = "Test"
+  uses = "actions/npm@master"
+  args = "version $LATEST"
 }
