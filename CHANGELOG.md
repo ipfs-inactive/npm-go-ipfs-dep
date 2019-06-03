@@ -1,3 +1,13 @@
+<a name="0.4.21-0"></a>
+## [0.4.21-0](https://github.com/ipfs/npm-go-ipfs-dep/compare/v0.4.20...v0.4.21-0) (2019-06-03)
+
+
+### Bug Fixes
+
+* use go-ipfs.version from parent package.json ([#34](https://github.com/ipfs/npm-go-ipfs-dep/issues/34)) ([708f24e](https://github.com/ipfs/npm-go-ipfs-dep/commit/708f24e)), closes [#33](https://github.com/ipfs/npm-go-ipfs-dep/issues/33)
+
+
+
 <a name="0.4.20"></a>
 ## [0.4.20](https://github.com/ipfs/npm-go-ipfs-dep/compare/v0.4.20-0...v0.4.20) (2019-04-17)
 
