@@ -5,14 +5,13 @@
 const download = require('./')
 
 const error = (err) => {
-  process.stdout.write(`${err}\n`)
-  process.stdout.write(`Download failed!\n\n`)
+  process.stdout.write(`❌ ${err}\n`)
   process.exit(1)
 }
 
 const success = (output) => {
-  process.stdout.write(`Downloaded ${output.fileName}\n`)
-  process.stdout.write(`Installed go-${output.fileName.replace('.tar.gz', '').replace('.zip', '').replace(/_/g, ' ')} to ${output.installPath}\n`)
+  process.stdout.write(`📦 Downloaded ${output.fileName}\n`)
+  process.stdout.write(`🤖 Installed go-${output.fileName.replace('.tar.gz', '').replace('.zip', '').replace(/_/g, ' ')} to ${output.installPath}\n`)
   process.exit(0)
 }
 

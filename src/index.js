@@ -25,6 +25,7 @@ const path = require('path')
 const tarFS = require('tar-fs')
 const unzip = require('unzip-stream')
 const fetch = require('node-fetch')
+const Progress = require('node-fetch-progress')
 const pkgConf = require('pkg-conf')
 const pkg = require('./../package.json')
 
@@ -50,9 +51,29 @@ function unpack ({ url, installPath, stream }) {
   })
 }
 
+function progressFetch (res) {
+  const progress = new Progress(res, { throttle: 100 })
+
+  return new Promise((resolve) => {
+    progress.on('progress', (p) => {
+      process.stdout.clearLine()
+      process.stdout.cursorTo(0)
+
+      const prog = Math.floor(p.progress * 100)
+
+      process.stdout.write(`🌟 ${prog}% ${prog === 100 ? '\n' : ''}`)
+
+      if (prog === 100) {
+        resolve()
+      }
+    })
+  })
+}
+
 async function download ({ installPath, url }) {
   const res = await fetch(url)
   if (!res.ok) throw new Error(`Unexpected status: ${res.status}`)
+  await progressFetch(res)
   return unpack({ url, installPath, stream: res.body })
 }
 
@@ -74,6 +95,7 @@ function cleanArguments (version, platform, arch, installPath) {
 }
 
 async function ensureVersion ({ version, distUrl }) {
+  process.stdout.write('🦄 Fetching go-ipfs version list\n')
   const res = await fetch(`${distUrl}/go-ipfs/versions`)
   if (!res.ok) throw new Error(`Unexpected status: ${res.status}`)
   const versions = (await res.text()).trim().split('\n')
@@ -86,6 +108,7 @@ async function ensureVersion ({ version, distUrl }) {
 async function getDownloadURL ({ version, platform, arch, distUrl }) {
   await ensureVersion({ version, distUrl })
 
+  process.stdout.write(`🦄 Fetching go-ipfs ${version} information\n`)
   const res = await fetch(`${distUrl}/go-ipfs/${version}/dist.json`)
   if (!res.ok) throw new Error(`Unexpected status: ${res.status}`)
   const data = await res.json()
@@ -106,7 +129,7 @@ module.exports = async function () {
   const args = await cleanArguments(...arguments)
   const url = await getDownloadURL(args)
 
-  process.stdout.write(`Downloading ${url}\n`)
+  process.stdout.write(`📦 Downloading ${url}\n`)
 
   await download({ ...args, url })
 
