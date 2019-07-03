@@ -25,21 +25,27 @@ CURRENT=`node -e 'console.log(require("./package.json").version)'`
 # The latest version on dist.ipfs.io e.g. "0.4.21"
 LATEST=`curl --silent https://dist.ipfs.io/go-ipfs/versions | tail -n 1 | cut -c 2-`
 
+# Verify $LATEST is valid semver!
+if ! npx semver $LATEST; then
+  echo "⚠️  Ignoring version $LATEST - Invalid SemVer string"
+  exit 1
+fi
+
 if [[ "$CURRENT" != "$LATEST" ]]; then
 
   # If the version contains a dash it's a pre-release, e.g "0.4.21-rc3"
-  # Ppublish pre-releases under the @next tag and releases @latest tag.
+  # Publish pre-releases under the @next tag and releases @latest tag.
   if [[ $LATEST =~ "-" ]]; then
     NPM_DIST_TAG='next'
-    echo "🎉 Found new go-ipfs pre-release $LATEST"
+    echo "🧪 Found new go-ipfs pre-release $LATEST@$NPM_DIST_TAG"
   else
     NPM_DIST_TAG='latest'
-    echo "🎉 Found new go-ipfs release $LATEST"
+    echo "🎉 Found new go-ipfs release $LATEST@$NPM_DIST_TAG"
   fi
 
   # The workspace starts as a detached commit for scheduled builds...
   git checkout -b master
-  # # Set sensible commit info
+  # Set sensible commit info
   git config --global user.name "${GITHUB_ACTOR}"
   git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
 
