@@ -68,7 +68,15 @@ node src/bin.js v0.4.3 linux amd64 ./go-ipfs
 
 ## Deployment
 
-### Prerelease
+Publishing is handled by GitHub Actions. The workflow is set to run every hour. It checks dist.ipfs.io for the latest go-ipfs version number, and compares with the version property in the package.json for this module. If they are different, the action will update the version of this module, publish it to npm, and push the change back to the master branch.
+
+- `.github/main.workflow` defines how frequently we check for a new go-ipfs release, (hourly) and the steps to carry out.
+- `action-check-for-go-ipfs-release` compares the module version with the latest go-ipfs release as published to dist.ipfs.io. This lets us bail early if everything is up to date.
+- `action-publish` handles updating the module version, publishing to npm, and pushing the changes back to the repo.
+
+If for some reason you need to run it manually, follow the instructions below.
+
+### Publish a Prerelease to npm
 
 You have made changes and want to triple check everything is working. You can! If you publish with a numeric prerelease identifier then `go-ipfs-dep` will strip it and install the corresponding version e.g. `0.4.19-0` installs `go-ipfs` version `0.4.19`.
 
@@ -84,6 +92,8 @@ npx aegir release --type prerelease --preid '' --dist-tag next --no-lint --no-te
 ```
 
 This publishes to the "next" tag meaning that the current "latest" version of `go-ipfs-dep` will remain the same.
+
+### Publish a Release to npm
 
 When you're finally ready to release:
 
