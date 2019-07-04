@@ -25,6 +25,7 @@ const path = require('path')
 const tarFS = require('tar-fs')
 const unzip = require('unzip-stream')
 const fetch = require('node-fetch')
+const pkgConf = require('pkg-conf')
 const pkg = require('./../package.json')
 
 function unpack ({ url, installPath, stream }) {
@@ -56,21 +57,18 @@ async function download ({ installPath, url }) {
 }
 
 function cleanArguments (version, platform, arch, installPath) {
-  const goIpfsInfo = pkg['go-ipfs']
-
-  const goIpfsVersion = (goIpfsInfo && goIpfsInfo.version)
-    ? pkg['go-ipfs'].version
-    : 'v' + pkg.version.replace(/-[0-9]+/, '')
-
-  const distUrl = (goIpfsInfo && goIpfsInfo.distUrl)
-    ? pkg['go-ipfs'].distUrl
-    : 'https://dist.ipfs.io'
-
+  const conf = pkgConf.sync('go-ipfs', {
+    cwd: path.join(process.cwd(), '..'),
+    defaults: {
+      version: 'v' + pkg.version.replace(/-[0-9]+/, ''),
+      distUrl: 'https://dist.ipfs.io'
+    }
+  })
   return {
-    version: process.env.TARGET_VERSION || version || goIpfsVersion,
+    version: process.env.TARGET_VERSION || version || conf.version,
     platform: process.env.TARGET_OS || platform || goenv.GOOS,
     arch: process.env.TARGET_ARCH || arch || goenv.GOARCH,
-    distUrl: process.env.GO_IPFS_DIST_URL || distUrl,
+    distUrl: process.env.GO_IPFS_DIST_URL || conf.distUrl,
     installPath: installPath ? path.resolve(installPath) : process.cwd()
   }
 }
@@ -105,7 +103,7 @@ async function getDownloadURL ({ version, platform, arch, distUrl }) {
 }
 
 module.exports = async function () {
-  const args = cleanArguments(...arguments)
+  const args = await cleanArguments(...arguments)
   const url = await getDownloadURL(args)
 
   process.stdout.write(`Downloading ${url}\n`)
