@@ -6,6 +6,6 @@
   "author": "",
   "license": "ISC",
   "go-ipfs": {
-    "version": "v0.4.21-rc3"
+    "version": "v0.4.20"
   }
 }
