@@ -1,3 +1,8 @@
+<a name="0.4.23-2"></a>
+## [0.4.23-2](https://github.com/ipfs/npm-go-ipfs-dep/compare/v0.4.23-1...v0.4.23-2) (2020-01-30)
+
+
+
 <a name="0.4.23-1"></a>
 ## [0.4.23-1](https://github.com/ipfs/npm-go-ipfs-dep/compare/v0.4.23-0...v0.4.23-1) (2020-01-30)
 
