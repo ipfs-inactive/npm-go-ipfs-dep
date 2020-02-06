@@ -16,6 +16,14 @@ const success = (output) => {
   process.exit(0)
 }
 
+const existingPath = download.path.silent()
+
+if (existingPath) {
+  process.stdout.write(`Detected existing binary at ${existingPath}\n`)
+  process.stdout.write(`Skipping download\n`)
+  process.exit(0)
+}
+
 // First param is the target version
 // Second param is the target platform
 // Third param is the target architecture
