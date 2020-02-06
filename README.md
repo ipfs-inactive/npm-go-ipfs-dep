@@ -23,6 +23,22 @@ This module downloads `go-ipfs` binaries from https://dist.ipfs.io into your pro
 
 By default it will download the go-ipfs version that matches the npm version of this module. So depending on `go-ipfs-dep@0.4.19` will install `go-ipfs v0.4.19` for your current system architecture, in to your project at `node_modules/go-ipfs-dep/go-ipfs/ipfs`.
 
+After downloading you can find out the path of the installed binary by calling the `path` function exported by this module:
+
+```javascript
+const { path } = require('go-ipfs-dep')
+
+console.info('go-ipfs is installed at', path())
+```
+
+An error will be thrown if the path to the binary cannot be resolved - if you do not wish this to happen, call `path.silent()`:
+
+```javascript
+const { path: silent } = require('go-ipfs-dep')
+
+console.info('go-ipfs may installed at', silent())
+```
+
 ### Overriding the go-ipfs version
 
 You can override the version of go-ipfs that gets downloaded by adding by adding a `go-ipfs.version` field to your `package.json`

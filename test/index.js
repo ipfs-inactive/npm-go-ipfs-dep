@@ -39,7 +39,7 @@ function download (version, platform, arch, callback) {
 }
 
 test('Ensure ipfs gets downloaded (current version and platform)', (t) => {
-  t.plan(5)
+  t.plan(7)
   const dir = path.resolve(__dirname, '../go-ipfs')
   rimraf.sync(dir)
 
@@ -52,12 +52,17 @@ test('Ensure ipfs gets downloaded (current version and platform)', (t) => {
     fs.stat(dir, (err, stats) => {
       t.error(err, 'go-ipfs should stat without error')
       t.ok(stats, 'go-ipfs was downloaded')
+      // Check detected path
+      fs.stat(Download.path(), (err3, stats3) => {
+        t.error(err3, 'detected binary path should stat without error')
+        t.ok(stats3.mode, 'downloaded binary was detected')
+      })
     })
   })
 })
 
 test('Ensure Windows version gets downloaded', (t) => {
-  t.plan(7)
+  t.plan(9)
   const dir = path.resolve(__dirname, '../go-ipfs')
   rimraf.sync(dir)
   download(version, 'windows', (err, res) => {
@@ -72,13 +77,18 @@ test('Ensure Windows version gets downloaded', (t) => {
       fs.stat(path.join(dir, 'ipfs.exe'), (err2, stats2) => {
         t.error(err2, 'windows bin should stat without error')
         t.ok(stats2, 'windows bin was downloaded')
+        // Check detected path
+        fs.stat(Download.path(), (err3, stats3) => {
+          t.error(err3, 'detected binary path should stat without error')
+          t.ok(stats3.mode, 'downloaded binary was detected')
+        })
       })
     })
   })
 })
 
 test('Ensure Linux version gets downloaded', (t) => {
-  t.plan(7)
+  t.plan(9)
   const dir = path.resolve(__dirname, '../go-ipfs')
   rimraf.sync(dir)
   download(version, 'linux', (err, res) => {
@@ -93,13 +103,18 @@ test('Ensure Linux version gets downloaded', (t) => {
       fs.stat(path.join(dir, 'ipfs'), (err2, stats2) => {
         t.error(err2, 'linux bin should stat without error')
         t.ok(stats2, 'linux bin was downloaded')
+        // Check detected path
+        fs.stat(Download.path(), (err3, stats3) => {
+          t.error(err3, 'detected binary path should stat without error')
+          t.ok(stats3.mode, 'downloaded binary was detected')
+        })
       })
     })
   })
 })
 
 test('Ensure OSX version gets downloaded', (t) => {
-  t.plan(7)
+  t.plan(9)
   const dir = path.resolve(__dirname, '../go-ipfs')
   rimraf.sync(dir)
   download(version, 'darwin', (err, res) => {
@@ -114,13 +129,18 @@ test('Ensure OSX version gets downloaded', (t) => {
       fs.stat(path.join(dir, 'ipfs'), (err2, stats2) => {
         t.error(err2, 'OSX bin should stat without error')
         t.ok(stats2, 'OSX bin was downloaded')
+        // Check detected path
+        fs.stat(Download.path(), (err3, stats3) => {
+          t.error(err3, 'detected binary path should stat without error')
+          t.ok(stats3.mode, 'downloaded binary was detected')
+        })
       })
     })
   })
 })
 
 test('Ensure TARGET_OS, TARGET_VERSION and TARGET_ARCH version gets downloaded', (t) => {
-  t.plan(7)
+  t.plan(9)
   const dir = path.resolve(__dirname, '../go-ipfs')
   rimraf.sync(dir)
   process.env.TARGET_OS = 'windows'
@@ -142,9 +162,14 @@ test('Ensure TARGET_OS, TARGET_VERSION and TARGET_ARCH version gets downloaded',
       fs.stat(path.join(dir, 'ipfs.exe'), (err2, stats2) => {
         t.error(err2, 'windows bin should stat without error')
         t.ok(stats2, 'windows bin was downloaded')
-        delete process.env.TARGET_OS
-        delete process.env.TARGET_VERSION
-        delete process.env.TARGET_ARCH
+        // Check detected path
+        fs.stat(Download.path(), (err3, stats3) => {
+          t.error(err3, 'detected binary path should stat without error')
+          t.ok(stats3.mode, 'downloaded binary was detected')
+          delete process.env.TARGET_OS
+          delete process.env.TARGET_VERSION
+          delete process.env.TARGET_ARCH
+        })
       })
     })
   })
@@ -170,4 +195,19 @@ test('Returns an error when dist url is 404', (t) => {
     t.ok(err.toString().indexOf('404') > -1, 'Throws the correct error message')
     delete process.env.GO_IPFS_DIST_URL
   })
+})
+
+test('Path returns undefined when no binary has been downloaded', (t) => {
+  t.plan(1)
+  const dir = path.resolve(__dirname, '../go-ipfs')
+  rimraf.sync(dir)
+  t.ok(Download.path.silent() === undefined, 'Path is undefined before installation')
+})
+
+test('Path returns undefined when no binary has been downloaded', (t) => {
+  t.plan(1)
+  const dir = path.resolve(__dirname, '../go-ipfs')
+  rimraf.sync(dir)
+
+  t.throws(Download.path, /not found/, 'Path throws if binary is not installed')
 })
