@@ -27,6 +27,7 @@ const unzip = require('unzip-stream')
 const fetch = require('node-fetch')
 const pkgConf = require('pkg-conf')
 const pkg = require('./../package.json')
+const fs = require('fs')
 
 function unpack ({ url, installPath, stream }) {
   return new Promise((resolve, reject) => {
@@ -113,5 +114,28 @@ module.exports = async function () {
   return {
     fileName: url.split('/').pop(),
     installPath: path.join(args.installPath, 'go-ipfs') + path.sep
+  }
+}
+
+module.exports.path = function () {
+  const paths = [
+    path.resolve(path.join(__dirname, '..', 'go-ipfs', 'ipfs')),
+    path.resolve(path.join(__dirname, '..', 'go-ipfs', 'ipfs.exe'))
+  ]
+
+  for (const bin of paths) {
+    if (fs.existsSync(bin)) {
+      return bin
+    }
+  }
+
+  throw new Error('go-ipfs binary not found, it may not be installed or an error may have occured during installation')
+}
+
+module.exports.path.silent = function () {
+  try {
+    return module.exports.path()
+  } catch (err) {
+    // ignore
   }
 }
