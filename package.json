@@ -1,8 +1,11 @@
 {
-  "name": "go-ipfs-dep",
-  "version": "0.4.23",
-  "description": "Install the latest go-ipfs binary",
+  "name": "rust-ipfs-dep",
+  "version": "0.1.0",
+  "description": "Install the latest rust-ipfs binary",
   "main": "src/index.js",
+  "bin": {
+    "ipfs": "./bin/rust-ipfs-http"
+  },
   "engines": {
     "node": ">=6.0.0",
     "npm": ">=3.0.0"
@@ -14,10 +17,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ipfs/npm-go-ipfs-dep.git"
+    "url": "git+https://github.com/ipfs-rust/npm-rust-ipfs-dep.git"
   },
   "dependencies": {
-    "go-platform": "^1.0.0",
     "gunzip-maybe": "^1.4.1",
     "node-fetch": "^2.3.0",
     "pkg-conf": "^3.1.0",
@@ -28,12 +30,12 @@
     "ipfs",
     "install"
   ],
-  "author": "Juan Benet <juan@benet.ai> (http://juan.benet.ai/)",
+  "author": "Mark Robert Henderson <mark@mrh.io> (https://mrh.io/)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ipfs/npm-go-ipfs-dep/issues"
+    "url": "https://github.com/ipfs/npm-rust-ipfs-dep/issues"
   },
-  "homepage": "https://github.com/ipfs/npm-go-ipfs-dep",
+  "homepage": "https://github.com/ipfs/npm-rust-ipfs-dep",
   "devDependencies": {
     "aegir": "^18.2.0",
     "execa": "^1.0.0",
@@ -41,20 +43,5 @@
     "standard": "^12.0.1",
     "tap-spec": "^5.0.0",
     "tape": "^4.9.1"
-  },
-  "contributors": [
-    "Alan Shaw <alan.shaw@protocol.ai>",
-    "Alex Potsides <alex@achingbrain.net>",
-    "David Dias <daviddias.p@gmail.com>",
-    "Edward Silverton <e.silverton@gmail.com>",
-    "Friedel Ziegelmayer <dignifiedquire@gmail.com>",
-    "Haad <haadcode@users.noreply.github.com>",
-    "Harlan T Wood <harlantwood@users.noreply.github.com>",
-    "Henrique Dias <hacdias@gmail.com>",
-    "Oli Evans <oli@tableflip.io>",
-    "Scott Hardy <scott.the.hardy@gmail.com>",
-    "Stephen Whitmore <stephen.whitmore@gmail.com>",
-    "haad <haad@headbanggames.com>",
-    "olizilla <olizilla@users.noreply.github.com>"
-  ]
+  }
 }
