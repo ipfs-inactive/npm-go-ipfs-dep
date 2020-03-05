@@ -62,7 +62,7 @@ function cleanArguments (version, platform, arch, installPath) {
     cwd: path.join(process.cwd(), '..'),
     defaults: {
       version: 'v' + pkg.version.replace(/-[0-9]+/, ''),
-      distUrl: 'https://dist.ipfs.io'
+      distUrl: 'https://api.github.com'
     }
   })
   return {
@@ -75,32 +75,31 @@ function cleanArguments (version, platform, arch, installPath) {
 }
 
 async function ensureVersion ({ version, distUrl }) {
-  const res = await fetch(`${distUrl}/go-ipfs/versions`)
+  const res = await fetch(`${distUrl}/repos/ipfs/go-ipfs/releases`)
   if (!res.ok) throw new Error(`Unexpected status: ${res.status}`)
-  const versions = (await res.text()).trim().split('\n')
+  const release = (await res.json()).filter(r => r.tag_name === version)[0]
 
-  if (versions.indexOf(version) === -1) {
+  if (!release) {
     throw new Error(`Version '${version}' not available`)
   }
+
+  return release
 }
 
 async function getDownloadURL ({ version, platform, arch, distUrl }) {
-  await ensureVersion({ version, distUrl })
+  const release = await ensureVersion({ version, distUrl })
 
-  const res = await fetch(`${distUrl}/go-ipfs/${version}/dist.json`)
+  const res = await fetch(release.assets_url)
   if (!res.ok) throw new Error(`Unexpected status: ${res.status}`)
-  const data = await res.json()
+  const assets = await res.json()
 
-  if (!data.platforms[platform]) {
-    throw new Error(`No binary available for platform '${platform}'`)
-  }
+  const assetName = `go-ipfs_${version}_${platform}-${arch}.tar.gz`
+  const targetAsset = assets.filter(a => a.name === assetName)[0]
+  const res2 = await fetch(targetAsset.url)
+  if (!res2.ok) throw new Error(`Unexpected status: ${res.status}`)
+  const asset = await res2.json()
 
-  if (!data.platforms[platform].archs[arch]) {
-    throw new Error(`No binary available for arch '${arch}'`)
-  }
-
-  const link = data.platforms[platform].archs[arch].link
-  return `${distUrl}/go-ipfs/${version}${link}`
+  return asset.browser_download_url
 }
 
 module.exports = async function () {
