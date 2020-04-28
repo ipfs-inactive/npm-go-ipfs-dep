@@ -1,3 +1,13 @@
+<a name="0.5.0"></a>
+# [0.5.0](https://github.com/ipfs/npm-go-ipfs-dep/compare/v0.4.23...v0.5.0) (2020-04-28)
+
+
+### Features
+
+* add .path and .path.silent functions to detect binary ([#40](https://github.com/ipfs/npm-go-ipfs-dep/issues/40)) ([c48958d](https://github.com/ipfs/npm-go-ipfs-dep/commit/c48958d)), closes [#25](https://github.com/ipfs/npm-go-ipfs-dep/issues/25)
+
+
+
 <a name="0.4.23"></a>
 ## [0.4.23](https://github.com/ipfs/npm-go-ipfs-dep/compare/v0.4.23-2...v0.4.23) (2020-01-30)
 
