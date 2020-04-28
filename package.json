@@ -1,6 +1,6 @@
 {
   "name": "go-ipfs-dep",
-  "version": "0.4.23",
+  "version": "0.5.0",
   "description": "Install the latest go-ipfs binary",
   "main": "src/index.js",
   "engines": {
@@ -50,6 +50,7 @@
     "Friedel Ziegelmayer <dignifiedquire@gmail.com>",
     "Haad <haadcode@users.noreply.github.com>",
     "Harlan T Wood <harlantwood@users.noreply.github.com>",
+    "Hector Sanjuan <code@hector.link>",
     "Henrique Dias <hacdias@gmail.com>",
     "Oli Evans <oli@tableflip.io>",
     "Scott Hardy <scott.the.hardy@gmail.com>",
