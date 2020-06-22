@@ -10,7 +10,7 @@ jobs:
     needs: checkout
     runs-on: ubuntu-latest
     steps:
-      - uses: ./.github/actions/check-for-go-ipfs-release
+      - uses: .github/actions/check-for-go-ipfs-release
   verify:
     needs: check
     runs-on: ubuntu-latest
@@ -24,4 +24,4 @@ jobs:
     needs: verify
     runs-on: ubuntu-latest
     steps:
-      - uses: ./.github/actions/publish
+      - uses: .github/actions/publish
