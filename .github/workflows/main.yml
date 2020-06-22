@@ -2,7 +2,12 @@ name: Release to npm
 on: [push]
 
 jobs:
+  checkout:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
   check:
+    needs: checkout
     runs-on: ubuntu-latest
     steps:
       - uses: ./.github/actions/check-for-go-ipfs-release
@@ -10,7 +15,6 @@ jobs:
     needs: check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
           node-version: 12
