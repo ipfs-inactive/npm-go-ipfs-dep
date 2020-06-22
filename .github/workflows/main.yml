@@ -1,6 +1,5 @@
-on:
-  schedule:
-    - cron:  '0 * * * *'
+name: Release to npm
+on: [push]
 
 jobs:
   check:
