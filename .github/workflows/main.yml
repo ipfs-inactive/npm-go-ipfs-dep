@@ -1,7 +1,7 @@
 name: Release to npm
 on:
   schedule:
-    - cron:  '0 * * * *'
+    - cron: '0 * * * *'
 
 jobs:
   check:
