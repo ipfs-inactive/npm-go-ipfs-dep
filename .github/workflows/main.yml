@@ -23,6 +23,5 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: ./.github/actions/publish
-        with:
-          with:
-            npm_auth_token: ${{ secrets.NPM_AUTH_TOKEN }}
+        env:
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
