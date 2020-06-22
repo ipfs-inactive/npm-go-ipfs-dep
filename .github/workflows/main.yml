@@ -4,18 +4,16 @@ on:
     - cron:  '0 * * * *'
 
 jobs:
-  deploy:
+  release:
     steps:
-      - name: check
-      - uses: ./.github/actions/check-for-go-ipfs-release
-      - name: verify
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 12
-      - run: npm install
-      - run: npm test
-      - name: publish
-      - uses: ./.github/actions/publish
-        with:
-          npm_auth_token: ${{ secrets.NPM_AUTH_TOKEN }}
+    - name: Check for new release
+      uses: ./.github/actions/check-for-go-ipfs-release
+    - name: Verify new release
+      uses: actions/checkout@v2
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12
+      run: npm install
+      run: npm test
+    - name: Publish new release
+      uses: ./.github/actions/publish
