@@ -1,5 +1,7 @@
 name: Release to npm
-on: [push]
+on:
+  schedule:
+    - cron: '0 * * * *'
 
 jobs:
   publish:
