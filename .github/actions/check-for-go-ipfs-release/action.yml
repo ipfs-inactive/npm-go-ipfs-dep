@@ -1,0 +1,4 @@
+name: 'Check for go-ipfs release'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'

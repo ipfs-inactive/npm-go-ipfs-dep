@@ -1,4 +1,4 @@
-name: derp
+name: "Release to npm"
 on:
   schedule:
     - cron:  '0 * * * *'
@@ -7,7 +7,7 @@ jobs:
   deploy:
     steps:
       - name: check
-      - uses: ./actions/check-for-go-ipfs-release
+      - uses: ./.github/actions/check-for-go-ipfs-release
       - name: verify
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
@@ -16,6 +16,6 @@ jobs:
       - run: npm install
       - run: npm test
       - name: publish
-      - uses: ./actions/publish
+      - uses: ./.github/actions/publish
         with:
           npm_auth_token: ${{ secrets.NPM_AUTH_TOKEN }}
