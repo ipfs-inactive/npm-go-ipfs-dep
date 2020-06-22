@@ -2,5 +2,3 @@ name: 'Publish release'
 runs:
   using: 'docker'
   image: 'Dockerfile'
-  env:
-    NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
