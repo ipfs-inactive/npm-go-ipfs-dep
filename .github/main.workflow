@@ -1,5 +1,7 @@
 workflow "Release to npm" {
-  on = "schedule(0 */1 * * *)"
+  on:
+    schedule:
+      - cron:  "0 */1 * * *"
   resolves = ["Version and publish"]
 }
 
