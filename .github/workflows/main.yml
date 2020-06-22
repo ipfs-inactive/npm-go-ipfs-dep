@@ -4,17 +4,19 @@ on:
     - cron:  '0 * * * *'
 
 jobs:
-  release:
+  check:
     steps:
-      - name: Check for new version
-        uses: ./.github/actions/check-for-go-ipfs-release
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Setup node
-        uses: actions/setup-node@v1
+      - uses: ./.github/actions/check-for-go-ipfs-release
+  verify:
+    needs: check
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
         with:
           node-version: 12
       - run: npm install
       - run: npm test
-      - name: Publish new version
-        uses: ./.github/actions/publish
+  publish:
+    needs: verify
+    steps:
+      - uses: ./.github/actions/publish
