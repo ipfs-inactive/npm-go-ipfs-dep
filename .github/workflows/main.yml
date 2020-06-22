@@ -6,11 +6,15 @@ on:
 jobs:
   release:
     steps:
-    - uses: ./.github/actions/check-for-go-ipfs-release
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v1
-      with:
-        node-version: 12
-    - run: npm install
-    - run: npm test
-    - uses: ./.github/actions/publish
+      - name: Check for new version
+        uses: ./.github/actions/check-for-go-ipfs-release
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - run: npm install
+      - run: npm test
+      - name: Publish new version
+        uses: ./.github/actions/publish
