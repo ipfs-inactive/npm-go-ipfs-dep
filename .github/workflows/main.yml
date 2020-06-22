@@ -1,0 +1,21 @@
+name: derp
+on:
+  schedule:
+    - cron:  '0 * * * *'
+
+jobs:
+  deploy:
+    steps:
+      - name: check
+      - uses: ./actions/check-for-go-ipfs-release
+      - name: verify
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - run: npm install
+      - run: npm test
+      - name: publish
+      - uses: ./actions/publish
+        with:
+          npm_auth_token: ${{ secrets.NPM_AUTH_TOKEN }}
