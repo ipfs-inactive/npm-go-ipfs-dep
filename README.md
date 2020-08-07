@@ -1,3 +1,5 @@
+# ⛔️ DEPRECATED: the `go-ipfs` module is a drop-in replacement for `go-ipfs-dep`, please use that instead
+
 # go-ipfs-dep
 
 > Download [go-ipfs](https://github.com/ipfs/go-ipfs/) to your node_modules.
