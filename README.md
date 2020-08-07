@@ -1,4 +1,10 @@
-# ⛔️ DEPRECATED: the `go-ipfs` module is a drop-in replacement for `go-ipfs-dep`, please use that instead
+# ⛔️ DEPRECATED
+
+The [`go-ipfs`](https://github.com/ipfs/npm-go-ipfs) module is a drop-in replacement, please use that instead
+
+_This library will not be maintained._
+
+----
 
 # go-ipfs-dep
 
